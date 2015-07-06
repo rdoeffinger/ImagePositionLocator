@@ -15,7 +15,7 @@
  */
 
 
-package de.hu_berlin.informatik.spws2014.imagePositionLocator;
+package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
 import org.opencv.core.MatOfFloat6;
 import org.opencv.core.Point;

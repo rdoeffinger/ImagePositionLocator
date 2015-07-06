@@ -1,4 +1,4 @@
-package de.hu_berlin.informatik.spws2014.imagePositionLocator;
+package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
 import java.util.List;
 

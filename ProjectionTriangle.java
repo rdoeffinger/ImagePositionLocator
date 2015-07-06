@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.hu_berlin.informatik.spws2014.imagePositionLocator;
+package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
 import java.util.ArrayList;
 import java.util.List;
