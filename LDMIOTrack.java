@@ -92,7 +92,7 @@ public class LDMIOTrack implements ILDMIOHandler {
 			ois.close();
 			fis.close();
 		}
-		if (!isFileValid) {
+		if (!isFileValid || gpspath == null || markers == null) {
 			gpspath = new ArrayList<GpsPoint>();
 			markers = new ArrayList<Marker>();
 		}
