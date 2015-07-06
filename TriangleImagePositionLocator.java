@@ -35,7 +35,7 @@ public class TriangleImagePositionLocator implements ImagePositionLocator {
 	private ArrayList<ProjectionTriangle> projs;
 	private Point2D imageSize;
 	
-	public TriangleImagePositionLocator(LocationDataManager inpdman, Point2D imageSize, IPLSettingsContainer settings) {
+	public TriangleImagePositionLocator(Point2D imageSize, IPLSettingsContainer settings) {
 		this.imageSize = imageSize;
 		this.settings = settings;
 	}
