@@ -29,6 +29,13 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		// TODO: for markers == 2 create extra point
 		if (markers == null || markers.size() <= 2 || currentPosition == null)
 			return null;
+		// Recenter for better numerical stability
+		double min_lon = Double.POSITIVE_INFINITY;
+		double min_lat = Double.POSITIVE_INFINITY;
+		for (int i = 0; i < markers.size(); i++) {
+			min_lon = Math.min(min_lon, markers.get(i).realpoint.longitude);
+			min_lat = Math.min(min_lat, markers.get(i).realpoint.latitude);
+		}
 		// Build linear system to solve to get coordinate
 		// transform - separately for x and y
 		// Need a 3rd constant 1 input to represent translations
@@ -37,8 +44,8 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		double[] bx = new double[markers.size()];
 		double[] by = new double[markers.size()];
 		for (int i = 0; i < markers.size(); i++) {
-			A[i][0] = markers.get(i).realpoint.longitude;
-			A[i][1] = markers.get(i).realpoint.latitude;
+			A[i][0] = markers.get(i).realpoint.longitude - min_lon;
+			A[i][1] = markers.get(i).realpoint.latitude - min_lat;
 			A[i][2] = 1;
 			bx[i] = markers.get(i).imgpoint.x;
 			by[i] = markers.get(i).imgpoint.y;
@@ -97,9 +104,11 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 			coeffsx[i] /= detAtWA;
 			coeffsy[i] /= detAtWA;
 		}
+		double lon = currentPosition.longitude - min_lon;
+		double lat = currentPosition.latitude - min_lat;
 		// Apply found coordinate transformation
-		return new Point2D(coeffsx[0] * currentPosition.longitude + coeffsx[1] * currentPosition.latitude + coeffsx[2],
-				coeffsy[0] * currentPosition.longitude + coeffsy[1] * currentPosition.latitude + coeffsy[2]);
+		return new Point2D(coeffsx[0] * lon + coeffsx[1] * lat + coeffsx[2],
+				coeffsy[0] * lon + coeffsy[1] * lat + coeffsy[2]);
 	}
 
 	public void newMarkerAdded(List<Marker> markers) {
