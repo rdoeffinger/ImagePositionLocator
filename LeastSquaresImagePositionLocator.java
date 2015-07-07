@@ -17,6 +17,7 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
@@ -26,7 +27,6 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 	}
 
 	public Point2D getPointPosition(GpsPoint currentPosition) {
-		// TODO: for markers == 2 create extra point
 		if (markers == null || markers.size() <= 2 || currentPosition == null)
 			return null;
 		// Recenter for better numerical stability
@@ -115,6 +115,11 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		// TODO: Run a trial run of the solver to check quality of points.
 		// If bad, display a warning. Possibly try to find outliers
 		// and suggest for correction
-		this.markers = markers;
+		this.markers = new ArrayList<Marker>(markers);
+		if (this.markers.size() == 2) {
+			// Note: this can only work if both map and
+			// GPS have identical scales in X and Y direction.
+			this.markers.add(this.markers.get(0).getOrthogonal(this.markers.get(1)));
+		}
 	}
 }
