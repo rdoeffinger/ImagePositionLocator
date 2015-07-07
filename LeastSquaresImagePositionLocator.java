@@ -36,38 +36,47 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		// transform - separately for x and y
 		// Need a 3rd constant 1 input to represent translations
 		// (compare: w in OpenGL).
+		// While at it calculate the minimum distance as well.
 		double[][] A = new double[markers.size()][3];
 		double[] bx = new double[markers.size()];
 		double[] by = new double[markers.size()];
+		double[] dist = new double[markers.size()];
+		double mindist = Double.POSITIVE_INFINITY;
 		for (int i = 0; i < markers.size(); i++) {
 			A[i][0] = markers.get(i).realpoint.longitude - cur_lon;
 			A[i][1] = markers.get(i).realpoint.latitude - cur_lat;
 			A[i][2] = 1;
+			dist[i] = A[i][0] * A[i][0] + A[i][1] * A[i][1];
+			mindist = Math.min(mindist, dist[i]);
+			if (mindist == 0) {
+				return new Point2D(markers.get(i).imgpoint.x, markers.get(i).imgpoint.y);
+			}
 			bx[i] = markers.get(i).imgpoint.x;
 			by[i] = markers.get(i).imgpoint.y;
 		}
 		// Multiple A and b by transpose(A)*weigths
-		// TODO: add weigths, they are supposed to be
+		// TODO: review weigths, they are supposed to be
 		// inversely proportional to datapoint reliability.
-		// 1/distance^2 might just and is cheap, though
+		// 1/distance^2 is cheap but just a wild guess, and
 		// GPS signal quality when marker was set could
 		// be used as input in addition...
 		double[] bx3 = new double[3];
 		double[] by3 = new double[3];
 		double[][] AtWA = new double[3][3];
 		for (int i = 0; i < markers.size(); i++) {
-			bx3[0] += bx[i] * A[i][0];
-			bx3[1] += bx[i] * A[i][1];
-			bx3[2] += bx[i] * A[i][2];
-			by3[0] += by[i] * A[i][0];
-			by3[1] += by[i] * A[i][1];
-			by3[2] += by[i] * A[i][2];
-			AtWA[0][0] += A[i][0] * A[i][0];
-			AtWA[0][1] += A[i][0] * A[i][1];
-			AtWA[0][2] += A[i][0] * A[i][2];
-			AtWA[1][1] += A[i][1] * A[i][1];
-			AtWA[1][2] += A[i][1] * A[i][2];
-			AtWA[2][2] += A[i][2] * A[i][2];
+			double weight = mindist / dist[i];
+			bx3[0] += bx[i] * A[i][0] * weight;
+			bx3[1] += bx[i] * A[i][1] * weight;
+			bx3[2] += bx[i] * A[i][2] * weight;
+			by3[0] += by[i] * A[i][0] * weight;
+			by3[1] += by[i] * A[i][1] * weight;
+			by3[2] += by[i] * A[i][2] * weight;
+			AtWA[0][0] += A[i][0] * A[i][0] * weight;
+			AtWA[0][1] += A[i][0] * A[i][1] * weight;
+			AtWA[0][2] += A[i][0] * A[i][2] * weight;
+			AtWA[1][1] += A[i][1] * A[i][1] * weight;
+			AtWA[1][2] += A[i][1] * A[i][2] * weight;
+			AtWA[2][2] += A[i][2] * A[i][2] * weight;
 		}
 		AtWA[1][0] = AtWA[0][1];
 		AtWA[2][0] = AtWA[0][2];
