@@ -69,11 +69,8 @@ public class GpsPoint implements Serializable {
 	}
 
 	public GpsPoint getOrthogonal(GpsPoint origin) {
-		  double s = Math.sin(Math.toRadians(-90));
-		  double c = Math.cos(Math.toRadians(-90));
-		  
-		  double xnew = ((longitude - origin.longitude) * c - (latitude - origin.latitude) * s) + origin.longitude;
-		  double ynew = ((longitude - origin.longitude) * s + (latitude - origin.latitude) * c) + origin.latitude;
+		  double xnew = origin.longitude - (latitude - origin.latitude);
+		  double ynew = origin.latitude + (longitude - origin.longitude);
 		  
 		  return new GpsPoint(xnew, ynew, this.time);
 	}
