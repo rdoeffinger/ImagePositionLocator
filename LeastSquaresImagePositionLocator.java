@@ -30,12 +30,8 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		if (markers == null || markers.size() <= 2 || currentPosition == null)
 			return null;
 		// Recenter for better numerical stability
-		double min_lon = Double.POSITIVE_INFINITY;
-		double min_lat = Double.POSITIVE_INFINITY;
-		for (int i = 0; i < markers.size(); i++) {
-			min_lon = Math.min(min_lon, markers.get(i).realpoint.longitude);
-			min_lat = Math.min(min_lat, markers.get(i).realpoint.latitude);
-		}
+		double cur_lon = currentPosition.longitude;
+		double cur_lat = currentPosition.latitude;
 		// Build linear system to solve to get coordinate
 		// transform - separately for x and y
 		// Need a 3rd constant 1 input to represent translations
@@ -44,8 +40,8 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		double[] bx = new double[markers.size()];
 		double[] by = new double[markers.size()];
 		for (int i = 0; i < markers.size(); i++) {
-			A[i][0] = markers.get(i).realpoint.longitude - min_lon;
-			A[i][1] = markers.get(i).realpoint.latitude - min_lat;
+			A[i][0] = markers.get(i).realpoint.longitude - cur_lon;
+			A[i][1] = markers.get(i).realpoint.latitude - cur_lat;
 			A[i][2] = 1;
 			bx[i] = markers.get(i).imgpoint.x;
 			by[i] = markers.get(i).imgpoint.y;
@@ -85,30 +81,20 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 			AtWA[1][2] * AtWA[2][1] * AtWA[0][0] -
 			AtWA[2][2] * AtWA[0][1] * AtWA[1][0];
 		// Inverse the matrix. Standard cross-product method.
-		double[][] inverse = new double [3][3];
-		inverse[0][0] = AtWA[1][1] * AtWA[2][2] - AtWA[1][2] * AtWA[2][1];
-		inverse[0][1] = AtWA[2][1] * AtWA[0][2] - AtWA[2][2] * AtWA[0][1];
-		inverse[0][2] = AtWA[0][1] * AtWA[1][2] - AtWA[0][2] * AtWA[1][1];
-		inverse[1][0] = AtWA[1][2] * AtWA[2][0] - AtWA[1][0] * AtWA[2][2];
-		inverse[1][1] = AtWA[2][2] * AtWA[0][0] - AtWA[2][0] * AtWA[0][2];
-		inverse[1][2] = AtWA[0][2] * AtWA[1][0] - AtWA[0][0] * AtWA[1][2];
-		inverse[2][0] = AtWA[1][0] * AtWA[2][1] - AtWA[1][1] * AtWA[2][0];
-		inverse[2][1] = AtWA[2][0] * AtWA[0][1] - AtWA[2][1] * AtWA[0][0];
-		inverse[2][2] = AtWA[0][0] * AtWA[1][1] - AtWA[0][1] * AtWA[1][0];
+		// We need only the last row though
+		double[] inverse = new double[3];
+		inverse[0] = AtWA[1][0] * AtWA[2][1] - AtWA[1][1] * AtWA[2][0];
+		inverse[1] = AtWA[2][0] * AtWA[0][1] - AtWA[2][1] * AtWA[0][0];
+		inverse[2] = AtWA[0][0] * AtWA[1][1] - AtWA[0][1] * AtWA[1][0];
 		// Use inverse matrix to solve linear system
-		double[] coeffsx = new double[3];
-		double[] coeffsy = new double[3];
-		for (int i = 0; i < 3; i++) {
-			coeffsx[i] = inverse[i][0] * bx3[0] + inverse[i][1] * bx3[1] + inverse[i][2] * bx3[2];
-			coeffsy[i] = inverse[i][0] * by3[0] + inverse[i][1] * by3[1] + inverse[i][2] * by3[2];
-			coeffsx[i] /= detAtWA;
-			coeffsy[i] /= detAtWA;
-		}
-		double lon = currentPosition.longitude - min_lon;
-		double lat = currentPosition.latitude - min_lat;
+		// The last coefficient is the offset between the coordinate systems.
+		// As we recentered GPS to our current position, the offset is our map position
+		double posx = inverse[0] * bx3[0] + inverse[1] * bx3[1] + inverse[2] * bx3[2];
+		posx /= detAtWA;
+		double posy = inverse[0] * by3[0] + inverse[1] * by3[1] + inverse[2] * by3[2];
+		posy /= detAtWA;
 		// Apply found coordinate transformation
-		return new Point2D(coeffsx[0] * lon + coeffsx[1] * lat + coeffsx[2],
-				coeffsy[0] * lon + coeffsy[1] * lat + coeffsy[2]);
+		return new Point2D(posx, posy);
 	}
 
 	public void newMarkerAdded(List<Marker> markers) {
