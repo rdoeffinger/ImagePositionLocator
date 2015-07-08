@@ -43,13 +43,9 @@ public class Point2D implements Serializable {
 	}
 	
 	public Point2D getOrthogonal(Point2D origin) { 
-		  double s = Math.sin(Math.toRadians(90));
-		  double c = Math.cos(Math.toRadians(90));
-		  
-		  double xnew = ((x - origin.x) * c - (y - origin.y) * s) + origin.x;
-		  double ynew = ((x - origin.x) * s + (y - origin.y) * c) + origin.y;
-		  
-		  return new Point2D(xnew, ynew);
+		double xnew = origin.x - (y - origin.y);
+		double ynew = origin.y + (x - origin.x);
+		return new Point2D(xnew, ynew);
 	}
 	
 	public double getDistance(Point2D a) {
