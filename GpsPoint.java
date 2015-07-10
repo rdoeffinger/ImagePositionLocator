@@ -69,8 +69,9 @@ public class GpsPoint implements Serializable {
 	}
 
 	public GpsPoint getOrthogonal(GpsPoint origin) {
-		  double xnew = origin.longitude - (latitude - origin.latitude);
-		  double ynew = origin.latitude + (longitude - origin.longitude);
+		  double lon_scale = Math.cos(origin.latitude);
+		  double xnew = origin.longitude - (latitude - origin.latitude) / lon_scale;
+		  double ynew = origin.latitude + (longitude - origin.longitude) * lon_scale;
 		  
 		  return new GpsPoint(xnew, ynew, this.time);
 	}
