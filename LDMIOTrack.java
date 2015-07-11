@@ -41,20 +41,6 @@ public class LDMIOTrack implements ILDMIOHandler {
 	long time;
 	
 	/**
-	 * Resets all the markers GpsPoints to the timely closest GpsPoints in track.
-	 */
-	private void repairBrockenMarkers() {
-		for (Marker m : markers) {
-			for (int index = 0; index < gpspath.size(); index++) {
-				if(gpspath.get(index).time > m.time) {
-					m.realpoint = gpspath.get(index);
-					break;
-				}
-			}
-		}
-	}
-	
-	/**
 	 * Reads track format.
 	 */
 	@SuppressWarnings("unchecked")
@@ -65,7 +51,6 @@ public class LDMIOTrack implements ILDMIOHandler {
 			case 3:
 				gpspath = (ArrayList<GpsPoint>) ois.readObject();
 				markers = (ArrayList<Marker>) ois.readObject();
-				repairBrockenMarkers();
 				break;
 			default:
 				System.err.println("Unknown file version number: "
