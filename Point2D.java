@@ -43,8 +43,9 @@ public class Point2D implements Serializable {
 	}
 	
 	public Point2D getOrthogonal(Point2D origin) { 
-		double xnew = origin.x - (y - origin.y);
-		double ynew = origin.y + (x - origin.x);
+		// Turn opposite to GPS as y axis goes down, not up
+		double xnew = origin.x + (y - origin.y);
+		double ynew = origin.y - (x - origin.x);
 		return new Point2D(xnew, ynew);
 	}
 	
