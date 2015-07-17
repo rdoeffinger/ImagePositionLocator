@@ -37,22 +37,24 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		// Need a 3rd constant 1 input to represent translations
 		// (compare: w in OpenGL).
 		// While at it calculate the minimum distance as well.
-		double[][] A = new double[markers.size()][3];
-		double[] bx = new double[markers.size()];
-		double[] by = new double[markers.size()];
-		double[] dist = new double[markers.size()];
+		int n_markers = markers.size();
+		double[][] A = new double[n_markers][3];
+		double[] bx = new double[n_markers];
+		double[] by = new double[n_markers];
+		double[] dist = new double[n_markers];
 		double mindist = Double.POSITIVE_INFINITY;
-		for (int i = 0; i < markers.size(); i++) {
-			A[i][0] = markers.get(i).realpoint.longitude - cur_lon;
-			A[i][1] = markers.get(i).realpoint.latitude - cur_lat;
+		for (int i = 0; i < n_markers; i++) {
+			Marker m = markers.get(i);
+			A[i][0] = m.realpoint.longitude - cur_lon;
+			A[i][1] = m.realpoint.latitude - cur_lat;
 			A[i][2] = 1;
 			dist[i] = A[i][0] * A[i][0] + A[i][1] * A[i][1];
 			mindist = Math.min(mindist, dist[i]);
 			if (mindist == 0) {
-				return new Point2D(markers.get(i).imgpoint.x, markers.get(i).imgpoint.y);
+				return new Point2D(m.imgpoint.x, m.imgpoint.y);
 			}
-			bx[i] = markers.get(i).imgpoint.x;
-			by[i] = markers.get(i).imgpoint.y;
+			bx[i] = m.imgpoint.x;
+			by[i] = m.imgpoint.y;
 		}
 		// Multiple A and b by transpose(A)*weigths
 		// TODO: review weigths, they are supposed to be
@@ -63,7 +65,7 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		double[] bx3 = new double[3];
 		double[] by3 = new double[3];
 		double[][] AtWA = new double[3][3];
-		for (int i = 0; i < markers.size(); i++) {
+		for (int i = 0; i < n_markers; i++) {
 			double weight = mindist / dist[i];
 			bx3[0] += bx[i] * A[i][0] * weight;
 			bx3[1] += bx[i] * A[i][1] * weight;
