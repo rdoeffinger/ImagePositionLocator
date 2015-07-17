@@ -79,24 +79,22 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 			AtWA[1][1] += A[i][1] * A[i][1] * weight;
 			AtWA[1][2] += A[i][1] * A[i][2] * weight;
 			AtWA[2][2] += A[i][2] * A[i][2] * weight;
+			// Others not calculated as matrix is symmetric
 		}
-		AtWA[1][0] = AtWA[0][1];
-		AtWA[2][0] = AtWA[0][2];
-		AtWA[2][1] = AtWA[1][2];
 		// TODO: if det == 0 create extra point like for 2 markers case
 		// Also warn if near 0 and thus unstable
+		// Make use of the fact that matrix is symmetric
 		double detAtWA = AtWA[0][0] * AtWA[1][1] * AtWA[2][2] +
-			AtWA[0][1] * AtWA[1][2] * AtWA[2][0] +
-			AtWA[0][2] * AtWA[1][0] * AtWA[2][1] -
-			AtWA[0][2] * AtWA[1][1] * AtWA[2][0] -
-			AtWA[1][2] * AtWA[2][1] * AtWA[0][0] -
-			AtWA[2][2] * AtWA[0][1] * AtWA[1][0];
+			2 * AtWA[0][1] * AtWA[1][2] * AtWA[0][2] -
+			AtWA[0][2] * AtWA[1][1] * AtWA[0][2] -
+			AtWA[1][2] * AtWA[1][2] * AtWA[0][0] -
+			AtWA[2][2] * AtWA[0][1] * AtWA[0][1];
 		// Inverse the matrix. Standard cross-product method.
 		// We need only the last row though
 		double[] inverse = new double[3];
-		inverse[0] = AtWA[1][0] * AtWA[2][1] - AtWA[1][1] * AtWA[2][0];
-		inverse[1] = AtWA[2][0] * AtWA[0][1] - AtWA[2][1] * AtWA[0][0];
-		inverse[2] = AtWA[0][0] * AtWA[1][1] - AtWA[0][1] * AtWA[1][0];
+		inverse[0] = AtWA[0][1] * AtWA[1][2] - AtWA[1][1] * AtWA[0][2];
+		inverse[1] = AtWA[0][2] * AtWA[0][1] - AtWA[1][2] * AtWA[0][0];
+		inverse[2] = AtWA[0][0] * AtWA[1][1] - AtWA[0][1] * AtWA[0][1];
 		// Use inverse matrix to solve linear system
 		// The last coefficient is the offset between the coordinate systems.
 		// As we recentered GPS to our current position, the offset is our map position
