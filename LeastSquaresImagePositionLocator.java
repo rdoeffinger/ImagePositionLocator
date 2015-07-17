@@ -37,24 +37,14 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		// Need a 3rd constant 1 input to represent translations
 		// (compare: w in OpenGL).
 		// While at it calculate the minimum distance as well.
-		int n_markers = markers.size();
-		double[][] A = new double[n_markers][3];
-		double[] bx = new double[n_markers];
-		double[] by = new double[n_markers];
-		double[] dist = new double[n_markers];
 		double mindist = Double.POSITIVE_INFINITY;
-		for (int i = 0; i < n_markers; i++) {
-			Marker m = markers.get(i);
-			A[i][0] = m.realpoint.longitude - cur_lon;
-			A[i][1] = m.realpoint.latitude - cur_lat;
-			A[i][2] = 1;
-			dist[i] = A[i][0] * A[i][0] + A[i][1] * A[i][1];
-			mindist = Math.min(mindist, dist[i]);
+		for (Marker m : markers) {
+			double lon = m.realpoint.longitude - cur_lon;
+			double lat = m.realpoint.latitude - cur_lat;
+			mindist = Math.min(mindist, lon * lon + lat * lat);
 			if (mindist == 0) {
 				return new Point2D(m.imgpoint.x, m.imgpoint.y);
 			}
-			bx[i] = m.imgpoint.x;
-			by[i] = m.imgpoint.y;
 		}
 		// Multiple A and b by transpose(A)*weigths
 		// TODO: review weigths, they are supposed to be
@@ -65,22 +55,24 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
 		double bx30 = 0, bx31 = 0, bx32 = 0;
 		double by30 = 0, by31 = 0, by32 = 0;
 		double AtWA00 = 0, AtWA01 = 0, AtWA02 = 0, AtWA11 = 0, AtWA12 = 0, AtWA22 = 0;
-		for (int i = 0; i < n_markers; i++) {
-			double weight = mindist / dist[i];
-			double a0 = A[i][0], a1 = A[i][1], a2 = A[i][2];
-			double wa0 = a0 * weight, wa1 = a1 * weight, wa2 = a2 * weight;
-			bx30 += bx[i] * wa0;
-			bx31 += bx[i] * wa1;
-			bx32 += bx[i] * wa2;
-			by30 += by[i] * wa0;
-			by31 += by[i] * wa1;
-			by32 += by[i] * wa2;
+		for (Marker m : markers) {
+			double a0 = m.realpoint.longitude - cur_lon, a1 = m.realpoint.latitude - cur_lat;
+			double weight = mindist / (a0 * a0 + a1 * a1);
+			double wa0 = a0 * weight, wa1 = a1 * weight, wa2 = weight;
+			double bx = m.imgpoint.x;
+			double by = m.imgpoint.y;
+			bx30 += bx * wa0;
+			bx31 += bx * wa1;
+			bx32 += bx * wa2;
+			by30 += by * wa0;
+			by31 += by * wa1;
+			by32 += by * wa2;
 			AtWA00 += a0 * wa0;
 			AtWA01 += a0 * wa1;
 			AtWA02 += a0 * wa2;
 			AtWA11 += a1 * wa1;
 			AtWA12 += a1 * wa2;
-			AtWA22 += a2 * wa2;
+			AtWA22 += wa2;
 			// Others not calculated as matrix is symmetric
 		}
 		// TODO: if det == 0 create extra point like for 2 markers case
