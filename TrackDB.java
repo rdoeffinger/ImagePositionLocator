@@ -112,7 +112,7 @@ public class TrackDB implements Serializable {
 		if (isFileValid) {
 			System.err.println("All OK.");
 			FileInputStream fis = new FileInputStream(dbFile);
-			ObjectInputStream ois = new ObjectInputStream(fis);
+			ObjectInputStream ois = new TranslateObjectInputStream(fis);
 			isFileValid = versionDependendLoad(ois);
 			ois.close();
 			fis.close();

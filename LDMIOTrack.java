@@ -72,7 +72,7 @@ public class LDMIOTrack implements ILDMIOHandler {
 		
 		if (isFileValid) {
 			FileInputStream fis = new FileInputStream(dbgTrackfile);
-			ObjectInputStream ois = new ObjectInputStream(fis);
+			ObjectInputStream ois = new TranslateObjectInputStream(fis);
 			readTrackFile(ois);
 			ois.close();
 			fis.close();
