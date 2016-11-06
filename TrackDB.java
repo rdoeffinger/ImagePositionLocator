@@ -119,10 +119,31 @@ public class TrackDB implements Serializable {
 		}
 		
 		if (!isFileValid) {
-			System.err.println("Could not read file. Creatin new trackDB in " + dbFile);
+			System.err.println("Could not read file. Creating new trackDB in " + dbFile);
 			maps = new HashMap<Long, TrackDBEntry>();
 			lastIdentifier = FIRST_IDENTIFIER;
 		}
+
+		// Find any "lost" files
+		File[] all_files = dbDir.listFiles();
+		boolean found_lost = false;
+		for (File file : all_files) {
+			if (!file.isFile()) continue;
+			String name = file.getName();
+			if (name.endsWith(".track")) name = name.substring(0, name.length() - ".track".length());
+			long number = 0;
+			try {
+				number = Long.parseLong(name);
+			} catch (Exception e) {}
+			if (number > 0 && maps.get(number) == null) {
+				System.err.println("Found lost map " + name);
+				TrackDBEntry tmp = new TrackDBEntry(number);
+				maps.put(number, tmp);
+				if (number >= lastIdentifier) lastIdentifier = number + 1;
+				found_lost = true;
+			}
+		}
+		if (found_lost) save();
 	}
 	
 	/**
