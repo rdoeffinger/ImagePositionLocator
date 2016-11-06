@@ -25,6 +25,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import de.hu_berlin.informatik.spws2014.mapever.FileUtils;
+
 /**
  * Main backend for LDM. 
  * Does not provide realtime saving.
@@ -68,12 +70,14 @@ public class LDMIOTrack implements ILDMIOHandler {
 	public LDMIOTrack(String pathToFile) throws IOException {
 		filename = pathToFile;
 		File dbgTrackfile = new File(pathToFile);
+		File backup = new File(pathToFile + ".bak");
 		boolean isFileValid = dbgTrackfile.exists();
 		
 		if (isFileValid) {
 			FileInputStream fis = new FileInputStream(dbgTrackfile);
 			ObjectInputStream ois = new TranslateObjectInputStream(fis);
-			readTrackFile(ois);
+			if (!readTrackFile(ois) && !backup.exists())
+				FileUtils.copyFileToFile(dbgTrackfile, backup);
 			ois.close();
 			fis.close();
 		}

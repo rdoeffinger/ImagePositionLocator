@@ -27,6 +27,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
+import de.hu_berlin.informatik.spws2014.mapever.FileUtils;
+
 /**
  * Class for listing and managing meta information about
  * track files in a directory. Saves data in a track.conf file
@@ -107,6 +109,7 @@ public class TrackDB implements Serializable {
 	TrackDB(File dbDir) throws IOException {
 		baseDir = dbDir;
 		dbFile = new File(dbDir + File.separator + configFileName);
+		File backup = new File(dbDir + File.separator + configFileName + ".bak");
 		boolean isFileValid = dbFile.isFile();
 		
 		if (isFileValid) {
@@ -114,6 +117,8 @@ public class TrackDB implements Serializable {
 			FileInputStream fis = new FileInputStream(dbFile);
 			ObjectInputStream ois = new TranslateObjectInputStream(fis);
 			isFileValid = versionDependendLoad(ois);
+			if (!isFileValid && !backup.exists())
+				FileUtils.copyFileToFile(dbFile, backup);
 			ois.close();
 			fis.close();
 		}
