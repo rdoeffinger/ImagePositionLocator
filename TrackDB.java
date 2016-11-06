@@ -18,6 +18,7 @@ package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -65,8 +66,13 @@ public class TrackDB implements Serializable {
 				System.err.println("Provide valid directory for TrackDB.");
 				return false;
 			}
-			
-			main = new TrackDB(baseDirectory);
+
+			try {
+				main = new TrackDB(baseDirectory);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return false;
+			}
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
