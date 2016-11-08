@@ -28,204 +28,204 @@ import java.util.ArrayList;
 import de.hu_berlin.informatik.spws2014.mapever.FileUtils;
 
 /**
- * Main backend for LDM. 
+ * Main backend for LDM.
  * Does not provide realtime saving.
  * Saves only when save is called.
  */
 public class LDMIOTrack implements ILDMIOHandler {
-	String filename;
-	
-	//Denotes the highest supported .track version
-	int protVersionNumber = 3;
-	
-	ArrayList<GpsPoint> gpspath;
-	ArrayList<Marker> markers;
-	long time;
-	
-	/**
-	 * Reads track format.
-	 */
-	@SuppressWarnings("unchecked")
-	private boolean readTrackFile(ObjectInputStream ois) throws IOException {
-		protVersionNumber = ois.readInt();
-		try {
-			switch (protVersionNumber) {
-			case 3:
-				gpspath = (ArrayList<GpsPoint>) ois.readObject();
-				markers = (ArrayList<Marker>) ois.readObject();
-				break;
-			default:
-				System.err.println("Unknown file version number: "
-						+ protVersionNumber
-						+ " encountered while reading DataManager.");
-				return false;
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-	
-	public LDMIOTrack(String pathToFile) throws IOException {
-		filename = pathToFile;
-		File dbgTrackfile = new File(pathToFile);
-		File backup = new File(pathToFile + ".bak");
-		boolean isFileValid = dbgTrackfile.exists();
-		
-		if (isFileValid) {
-			FileInputStream fis = new FileInputStream(dbgTrackfile);
-			ObjectInputStream ois = new TranslateObjectInputStream(fis);
-			if (!readTrackFile(ois) && !backup.exists())
-				FileUtils.copyFileToFile(dbgTrackfile, backup);
-			ois.close();
-			fis.close();
-		}
-		if (!isFileValid || gpspath == null || markers == null) {
-			gpspath = new ArrayList<GpsPoint>();
-			markers = new ArrayList<Marker>();
-		}
-	}
-	
-	@Override
-	public ArrayList<Marker> getAllMarkers() {
-		return markers;
-	}
+    String filename;
 
-	@Override
-	public Marker getMarker(Point2D imgpoint) {
-		for (Marker m : markers) {
-			if (m.imgpoint.equals(imgpoint))
-				return m;
-		}
-		return null;
-	}
+    //Denotes the highest supported .track version
+    int protVersionNumber = 3;
 
-	@Override
-	public Marker getMarker(GpsPoint realpoint) {
-		for (Marker m : markers) {
-			if (m.realpoint.equals(realpoint))
-				return m;
-		}
-		return null;
-	}
-	
-	@Override
-	public Marker getLastMarker() {
-		if (markers.size() == 0)
-			return null;
-		else
-			return markers.get(markers.size()-1);
-	}
+    ArrayList<GpsPoint> gpspath;
+    ArrayList<Marker> markers;
+    long time;
 
-	@Override
-	public boolean removeMarker(Point2D imgpoint) {
-		Marker m = getMarker(imgpoint);
-		if (m == null)
-			return false;
-		markers.remove(m);
-		return true;
-	}
+    /**
+     * Reads track format.
+     */
+    @SuppressWarnings("unchecked")
+    private boolean readTrackFile(ObjectInputStream ois) throws IOException {
+        protVersionNumber = ois.readInt();
+        try {
+            switch (protVersionNumber) {
+            case 3:
+                gpspath = (ArrayList<GpsPoint>) ois.readObject();
+                markers = (ArrayList<Marker>) ois.readObject();
+                break;
+            default:
+                System.err.println("Unknown file version number: "
+                                   + protVersionNumber
+                                   + " encountered while reading DataManager.");
+                return false;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public boolean removeMarker(GpsPoint realpoint) {
-		Marker m = getMarker(realpoint);
-		if (m == null)
-			return false;
-		markers.remove(m);
-		return true;
-	}
-	
-	@Override
-	public ArrayList<GpsPoint> getAllGpsPoints() {
-		return gpspath;
-	}
-	
-	@Override
-	public GpsPoint getLastGpsPoint() {
-		if (gpspath.size() == 0)
-			return null;
-		else
-			return gpspath.get(gpspath.size()-1);
-	}
+    public LDMIOTrack(String pathToFile) throws IOException {
+        filename = pathToFile;
+        File dbgTrackfile = new File(pathToFile);
+        File backup = new File(pathToFile + ".bak");
+        boolean isFileValid = dbgTrackfile.exists();
 
-	@Override
-	public boolean removeMarker(Marker m) {
-		return markers.remove(m);
-	}
+        if (isFileValid) {
+            FileInputStream fis = new FileInputStream(dbgTrackfile);
+            ObjectInputStream ois = new TranslateObjectInputStream(fis);
+            if (!readTrackFile(ois) && !backup.exists())
+                FileUtils.copyFileToFile(dbgTrackfile, backup);
+            ois.close();
+            fis.close();
+        }
+        if (!isFileValid || gpspath == null || markers == null) {
+            gpspath = new ArrayList<GpsPoint>();
+            markers = new ArrayList<Marker>();
+        }
+    }
 
-	@Override
-	public void removeAllMarkers() {
-		markers = new ArrayList<Marker>();
-	}
+    @Override
+    public ArrayList<Marker> getAllMarkers() {
+        return markers;
+    }
 
-	@Override
-	public boolean removeGpsPoint(GpsPoint p) {
-		return gpspath.remove(p);
-	}
+    @Override
+    public Marker getMarker(Point2D imgpoint) {
+        for (Marker m : markers) {
+            if (m.imgpoint.equals(imgpoint))
+                return m;
+        }
+        return null;
+    }
 
-	@Override
-	public void removeAllGpsPoints() {
-		gpspath = new ArrayList<GpsPoint>();
-	}
+    @Override
+    public Marker getMarker(GpsPoint realpoint) {
+        for (Marker m : markers) {
+            if (m.realpoint.equals(realpoint))
+                return m;
+        }
+        return null;
+    }
 
-	@Override
-	public void addMarker(Marker m) {
-		markers.add(m);
-	}
+    @Override
+    public Marker getLastMarker() {
+        if (markers.size() == 0)
+            return null;
+        else
+            return markers.get(markers.size()-1);
+    }
 
-	@Override
-	public void addGpsPoint(GpsPoint p) {
-		gpspath.add(p);
-	}
-	
-	@Override
-	public void setLastGpsPointTime(long unixTime) {
-		time = unixTime;
-	}
+    @Override
+    public boolean removeMarker(Point2D imgpoint) {
+        Marker m = getMarker(imgpoint);
+        if (m == null)
+            return false;
+        markers.remove(m);
+        return true;
+    }
 
-	@Override
-	public long getLastGpsPointTime() {
-		return this.time;
-	}
-	
-	/**
-	 * Prints two csv tables to ps.
-	 * The first represents all the known GpsPoints
-	 * while the second consists of all Markers.
-	 * @param ps
-	 */
-	public void printValuesAsCSV(PrintStream ps) {
-		ps.println("type,name,latitude,longitude");
-		for (GpsPoint p : getAllGpsPoints())
-			ps.println("P, " + p.time + ", " + p.latitude + ", " + p.longitude);
-		ps.println("name,name2,latitude,longitude");
-		for (Marker m : getAllMarkers())
-			ps.println(m.imgpoint.x + ", " + m.imgpoint.y + ", "
-					+ m.realpoint.latitude + ", " + m.realpoint.longitude);
-	}
-	
-	/**
-	 * Writes into track format.
-	 */
-	private void writeTrackFile(ObjectOutputStream oos) throws IOException {
-		oos.writeInt(protVersionNumber);
-		oos.writeObject(gpspath);
-		oos.writeObject(markers);
-		oos.writeLong(time);
-	}
-	
-	@Override
-	public void save() {
-		File dbgTrackfile = new File(filename);
-		try {
-			FileOutputStream fis = new FileOutputStream(dbgTrackfile);
-			ObjectOutputStream oos = new ObjectOutputStream(fis);
-			writeTrackFile(oos);
-			oos.close();
-			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public boolean removeMarker(GpsPoint realpoint) {
+        Marker m = getMarker(realpoint);
+        if (m == null)
+            return false;
+        markers.remove(m);
+        return true;
+    }
+
+    @Override
+    public ArrayList<GpsPoint> getAllGpsPoints() {
+        return gpspath;
+    }
+
+    @Override
+    public GpsPoint getLastGpsPoint() {
+        if (gpspath.size() == 0)
+            return null;
+        else
+            return gpspath.get(gpspath.size()-1);
+    }
+
+    @Override
+    public boolean removeMarker(Marker m) {
+        return markers.remove(m);
+    }
+
+    @Override
+    public void removeAllMarkers() {
+        markers = new ArrayList<Marker>();
+    }
+
+    @Override
+    public boolean removeGpsPoint(GpsPoint p) {
+        return gpspath.remove(p);
+    }
+
+    @Override
+    public void removeAllGpsPoints() {
+        gpspath = new ArrayList<GpsPoint>();
+    }
+
+    @Override
+    public void addMarker(Marker m) {
+        markers.add(m);
+    }
+
+    @Override
+    public void addGpsPoint(GpsPoint p) {
+        gpspath.add(p);
+    }
+
+    @Override
+    public void setLastGpsPointTime(long unixTime) {
+        time = unixTime;
+    }
+
+    @Override
+    public long getLastGpsPointTime() {
+        return this.time;
+    }
+
+    /**
+     * Prints two csv tables to ps.
+     * The first represents all the known GpsPoints
+     * while the second consists of all Markers.
+     * @param ps
+     */
+    public void printValuesAsCSV(PrintStream ps) {
+        ps.println("type,name,latitude,longitude");
+        for (GpsPoint p : getAllGpsPoints())
+            ps.println("P, " + p.time + ", " + p.latitude + ", " + p.longitude);
+        ps.println("name,name2,latitude,longitude");
+        for (Marker m : getAllMarkers())
+            ps.println(m.imgpoint.x + ", " + m.imgpoint.y + ", "
+                       + m.realpoint.latitude + ", " + m.realpoint.longitude);
+    }
+
+    /**
+     * Writes into track format.
+     */
+    private void writeTrackFile(ObjectOutputStream oos) throws IOException {
+        oos.writeInt(protVersionNumber);
+        oos.writeObject(gpspath);
+        oos.writeObject(markers);
+        oos.writeLong(time);
+    }
+
+    @Override
+    public void save() {
+        File dbgTrackfile = new File(filename);
+        try {
+            FileOutputStream fis = new FileOutputStream(dbgTrackfile);
+            ObjectOutputStream oos = new ObjectOutputStream(fis);
+            writeTrackFile(oos);
+            oos.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

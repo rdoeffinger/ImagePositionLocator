@@ -17,12 +17,11 @@
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
 public class PointNotInImageBoundsException extends  Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public PointNotInImageBoundsException() { }
+    public PointNotInImageBoundsException() { }
 
-    public PointNotInImageBoundsException(String message)
-    {
-       super(message);
+    public PointNotInImageBoundsException(String message) {
+        super(message);
     }
 }

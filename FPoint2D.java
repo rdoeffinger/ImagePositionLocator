@@ -20,43 +20,43 @@ package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
  * Floating Point 2D
  */
 public class FPoint2D {
-	public double x;
-	public double y;
-	
-	public FPoint2D (int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public FPoint2D(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public FPoint2D(Point2D inp) {
-		this.x = inp.x;
-		this.y = inp.y;
-	}
-	
-	public FPoint2D () { }
-	
-	/**
-	 * FusedMultiplyAdd
-	 * Add the scalar * fPoint2D to this point.
-	 * @param fPoint2D
-	 * @param scalar
-	 */
-	public void fma(FPoint2D fPoint2D, double scalar) {
-		x += fPoint2D.x * scalar;
-		y += fPoint2D.y * scalar;
-	}
-	
-	public void div(double scalar) {
-		x /= scalar;
-		y /= scalar;
-	}
-	
-	public String toString() {
-		return Integer.toHexString(this.hashCode()) + " X: " + x + " Y: " + y;
-	}
+    public double x;
+    public double y;
+
+    public FPoint2D (int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public FPoint2D(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public FPoint2D(Point2D inp) {
+        this.x = inp.x;
+        this.y = inp.y;
+    }
+
+    public FPoint2D () { }
+
+    /**
+     * FusedMultiplyAdd
+     * Add the scalar * fPoint2D to this point.
+     * @param fPoint2D
+     * @param scalar
+     */
+    public void fma(FPoint2D fPoint2D, double scalar) {
+        x += fPoint2D.x * scalar;
+        y += fPoint2D.y * scalar;
+    }
+
+    public void div(double scalar) {
+        x /= scalar;
+        y /= scalar;
+    }
+
+    public String toString() {
+        return Integer.toHexString(this.hashCode()) + " X: " + x + " Y: " + y;
+    }
 }

@@ -22,37 +22,37 @@ import java.io.Serializable;
  * A tuple of GpsPoint and Point2D.
  */
 public class Marker implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	public long time;
-	public Point2D imgpoint;
-	public GpsPoint realpoint = null;
-	
-	public Marker(Point2D imgpoint, long time, GpsPoint a) {
-		this.imgpoint = imgpoint;
-		this.time = time;
-		realpoint = a;
-	}
-	
-	public Marker(Point2D imgpoint, long time, GpsPoint a, GpsPoint b) {
-		this.imgpoint = imgpoint;
-		this.time = time;
-		realpoint = new GpsPoint(a, b, time);
-	}
-	
-	public void updateRealpoint(GpsPoint a) {
-		realpoint = new GpsPoint(this.realpoint, a, this.time);
-	}
-	
-	public void updateRealPoint(GpsPoint a, GpsPoint b) {
-		realpoint = new GpsPoint(a, b, this.time);
-	}
-	
-	public Marker getOrthogonal(Marker a) {
-		return new Marker(imgpoint.getOrthogonal(a.imgpoint), time, realpoint.getOrthogonal(a.realpoint));
-	}
-	
-	public String toString() {
-		return Integer.toHexString(this.hashCode()) + " Imagep: " + imgpoint.toString() + " Realp: " + realpoint.toString();
-	}
+    private static final long serialVersionUID = 1L;
+
+    public long time;
+    public Point2D imgpoint;
+    public GpsPoint realpoint = null;
+
+    public Marker(Point2D imgpoint, long time, GpsPoint a) {
+        this.imgpoint = imgpoint;
+        this.time = time;
+        realpoint = a;
+    }
+
+    public Marker(Point2D imgpoint, long time, GpsPoint a, GpsPoint b) {
+        this.imgpoint = imgpoint;
+        this.time = time;
+        realpoint = new GpsPoint(a, b, time);
+    }
+
+    public void updateRealpoint(GpsPoint a) {
+        realpoint = new GpsPoint(this.realpoint, a, this.time);
+    }
+
+    public void updateRealPoint(GpsPoint a, GpsPoint b) {
+        realpoint = new GpsPoint(a, b, this.time);
+    }
+
+    public Marker getOrthogonal(Marker a) {
+        return new Marker(imgpoint.getOrthogonal(a.imgpoint), time, realpoint.getOrthogonal(a.realpoint));
+    }
+
+    public String toString() {
+        return Integer.toHexString(this.hashCode()) + " Imagep: " + imgpoint.toString() + " Realp: " + realpoint.toString();
+    }
 }

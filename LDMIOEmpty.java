@@ -23,122 +23,122 @@ import java.util.ArrayList;
  * Mostly used for debugging purposes.
  */
 public class LDMIOEmpty implements ILDMIOHandler {
-	
-	ArrayList<GpsPoint> gpspath = new ArrayList<GpsPoint>();
-	ArrayList<Marker> markers = new ArrayList<Marker>();
-	long time;
-	
-	@Override
-	public ArrayList<Marker> getAllMarkers() {
-		return markers;
-	}
 
-	/**
-	 * Returns one currently known Marker with this imgpoint or null
-	 */
-	@Override
-	public Marker getMarker(Point2D imgpoint) {
-		for (Marker m : markers) {
-			if (m.imgpoint.equals(imgpoint))
-				return m;
-		}
-		return null;
-	}
+    ArrayList<GpsPoint> gpspath = new ArrayList<GpsPoint>();
+    ArrayList<Marker> markers = new ArrayList<Marker>();
+    long time;
 
-	/**
-	 * Returns one currently known Marker with this realpoint or null
-	 */
-	@Override
-	public Marker getMarker(GpsPoint realpoint) {
-		for (Marker m : markers) {
-			if (m.realpoint.equals(realpoint))
-				return m;
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns the last added Marker
-	 */
-	@Override
-	public Marker getLastMarker() {
-		return markers.get(markers.size()-1);
-	}
+    @Override
+    public ArrayList<Marker> getAllMarkers() {
+        return markers;
+    }
 
-	/**
-	 * Removes one currently known Marker with this imgpoint or returns false
-	 */
-	@Override
-	public boolean removeMarker(Point2D imgpoint) {
-		Marker m = getMarker(imgpoint);
-		if (m == null)
-			return false;
-		markers.remove(m);
-		return true;
-	}
+    /**
+     * Returns one currently known Marker with this imgpoint or null
+     */
+    @Override
+    public Marker getMarker(Point2D imgpoint) {
+        for (Marker m : markers) {
+            if (m.imgpoint.equals(imgpoint))
+                return m;
+        }
+        return null;
+    }
 
-	/**
-	 * Removes one currently known Marker with this realpoint or returns false
-	 */
-	@Override
-	public boolean removeMarker(GpsPoint realpoint) {
-		Marker m = getMarker(realpoint);
-		if (m == null)
-			return false;
-		markers.remove(m);
-		return true;
-	}
-	
-	@Override
-	public ArrayList<GpsPoint> getAllGpsPoints() {
-		return gpspath;
-	}
-	
-	@Override
-	public GpsPoint getLastGpsPoint() {
-		return gpspath.get(gpspath.size()-1);
-	}
+    /**
+     * Returns one currently known Marker with this realpoint or null
+     */
+    @Override
+    public Marker getMarker(GpsPoint realpoint) {
+        for (Marker m : markers) {
+            if (m.realpoint.equals(realpoint))
+                return m;
+        }
+        return null;
+    }
 
-	@Override
-	public boolean removeMarker(Marker m) {
-		return markers.remove(m);
-	}
+    /**
+     * Returns the last added Marker
+     */
+    @Override
+    public Marker getLastMarker() {
+        return markers.get(markers.size()-1);
+    }
 
-	@Override
-	public void removeAllMarkers() {
-		markers = new ArrayList<Marker>();
-	}
+    /**
+     * Removes one currently known Marker with this imgpoint or returns false
+     */
+    @Override
+    public boolean removeMarker(Point2D imgpoint) {
+        Marker m = getMarker(imgpoint);
+        if (m == null)
+            return false;
+        markers.remove(m);
+        return true;
+    }
 
-	@Override
-	public boolean removeGpsPoint(GpsPoint p) {
-		return gpspath.remove(p);
-	}
+    /**
+     * Removes one currently known Marker with this realpoint or returns false
+     */
+    @Override
+    public boolean removeMarker(GpsPoint realpoint) {
+        Marker m = getMarker(realpoint);
+        if (m == null)
+            return false;
+        markers.remove(m);
+        return true;
+    }
 
-	@Override
-	public void removeAllGpsPoints() {
-		gpspath = new ArrayList<GpsPoint>();
-	}
+    @Override
+    public ArrayList<GpsPoint> getAllGpsPoints() {
+        return gpspath;
+    }
 
-	@Override
-	public void addMarker(Marker m) {
-		markers.add(m);
-	}
+    @Override
+    public GpsPoint getLastGpsPoint() {
+        return gpspath.get(gpspath.size()-1);
+    }
 
-	@Override
-	public void addGpsPoint(GpsPoint p) {
-		gpspath.add(p);
-	}
-	
-	@Override
-	public void setLastGpsPointTime(long unixTime) {
-		time = unixTime;
-	}
+    @Override
+    public boolean removeMarker(Marker m) {
+        return markers.remove(m);
+    }
 
-	@Override
-	public long getLastGpsPointTime() {
-		return this.time;
-	}
-	
-	@Override
-	public void save() { }
+    @Override
+    public void removeAllMarkers() {
+        markers = new ArrayList<Marker>();
+    }
+
+    @Override
+    public boolean removeGpsPoint(GpsPoint p) {
+        return gpspath.remove(p);
+    }
+
+    @Override
+    public void removeAllGpsPoints() {
+        gpspath = new ArrayList<GpsPoint>();
+    }
+
+    @Override
+    public void addMarker(Marker m) {
+        markers.add(m);
+    }
+
+    @Override
+    public void addGpsPoint(GpsPoint p) {
+        gpspath.add(p);
+    }
+
+    @Override
+    public void setLastGpsPointTime(long unixTime) {
+        time = unixTime;
+    }
+
+    @Override
+    public long getLastGpsPointTime() {
+        return this.time;
+    }
+
+    @Override
+    public void save() { }
 }

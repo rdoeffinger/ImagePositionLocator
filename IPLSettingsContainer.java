@@ -20,59 +20,59 @@ package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
  * Contains values for customizing the ImagePositionLocator
  */
 public class IPLSettingsContainer {
-	public static IPLSettingsContainer DefaultContainer = new IPLSettingsContainer(3, 4.2, 0.1, 0.5, true);
-	
-	private double fallofExponent;
-	private double minTriAngleSize;
-	private double badTriWeightPenalty;
-	private double maxDissimilarityPercent;
-	private boolean debugOutputEnabled;
-	
-	public IPLSettingsContainer(double fallofExponent, double minTriAngleSize, double badTriWeightPenalty, double maxDissimilarityPercent, boolean debugOutputEnabled) {
-		setFallofExponent(fallofExponent);
-		setMinTriAngleSize(minTriAngleSize);
-		setBadTriWeightPenalty(badTriWeightPenalty);
-		setMaxDissimilarityPercent(maxDissimilarityPercent);
-		setDebugOutputEnabled(debugOutputEnabled);
-	}
+    public static IPLSettingsContainer DefaultContainer = new IPLSettingsContainer(3, 4.2, 0.1, 0.5, true);
 
-	public double getFallofExponent() {
-		return fallofExponent;
-	}
+    private double fallofExponent;
+    private double minTriAngleSize;
+    private double badTriWeightPenalty;
+    private double maxDissimilarityPercent;
+    private boolean debugOutputEnabled;
 
-	public void setFallofExponent(double fallofExponent) {
-		this.fallofExponent = fallofExponent;
-	}
+    public IPLSettingsContainer(double fallofExponent, double minTriAngleSize, double badTriWeightPenalty, double maxDissimilarityPercent, boolean debugOutputEnabled) {
+        setFallofExponent(fallofExponent);
+        setMinTriAngleSize(minTriAngleSize);
+        setBadTriWeightPenalty(badTriWeightPenalty);
+        setMaxDissimilarityPercent(maxDissimilarityPercent);
+        setDebugOutputEnabled(debugOutputEnabled);
+    }
 
-	public double getMinTriAngleSize() {
-		return minTriAngleSize;
-	}
+    public double getFallofExponent() {
+        return fallofExponent;
+    }
 
-	public void setMinTriAngleSize(double minTriAngleSize) {
-		this.minTriAngleSize = minTriAngleSize;
-	}
+    public void setFallofExponent(double fallofExponent) {
+        this.fallofExponent = fallofExponent;
+    }
 
-	public double getBadTriWeightPenalty() {
-		return badTriWeightPenalty;
-	}
+    public double getMinTriAngleSize() {
+        return minTriAngleSize;
+    }
 
-	public void setBadTriWeightPenalty(double badTriWeightPenalty) {
-		this.badTriWeightPenalty = badTriWeightPenalty;
-	}
+    public void setMinTriAngleSize(double minTriAngleSize) {
+        this.minTriAngleSize = minTriAngleSize;
+    }
 
-	public double getMaxDissimilarityPercent() {
-		return maxDissimilarityPercent;
-	}
+    public double getBadTriWeightPenalty() {
+        return badTriWeightPenalty;
+    }
 
-	public void setMaxDissimilarityPercent(double maxDissimilarityPercent) {
-		this.maxDissimilarityPercent = maxDissimilarityPercent;
-	}
+    public void setBadTriWeightPenalty(double badTriWeightPenalty) {
+        this.badTriWeightPenalty = badTriWeightPenalty;
+    }
 
-	public boolean isDebugOutputEnabled() {
-		return debugOutputEnabled;
-	}
+    public double getMaxDissimilarityPercent() {
+        return maxDissimilarityPercent;
+    }
 
-	public void setDebugOutputEnabled(boolean debugOutputEnabled) {
-		this.debugOutputEnabled = debugOutputEnabled;
-	}
+    public void setMaxDissimilarityPercent(double maxDissimilarityPercent) {
+        this.maxDissimilarityPercent = maxDissimilarityPercent;
+    }
+
+    public boolean isDebugOutputEnabled() {
+        return debugOutputEnabled;
+    }
+
+    public void setDebugOutputEnabled(boolean debugOutputEnabled) {
+        this.debugOutputEnabled = debugOutputEnabled;
+    }
 }

@@ -23,26 +23,26 @@ import java.io.Serializable;
  * May only be created by TrackDB!
  */
 public class TrackDBEntry implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	private Long identifier;
-	private String mapname;
-	
-	TrackDBEntry(Long identifier) {
-		this.identifier = identifier;
-		mapname = "";
-	}
-	
-	public Long getIdentifier() {
-		return identifier;
-	}
-	
-	public String getMapname() {
-		return mapname;
-	}
-	
-	public void setMapname(String mapname) {
-		this.mapname = mapname;
-		TrackDB.main.save();
-	}
+    private static final long serialVersionUID = 1L;
+
+    private Long identifier;
+    private String mapname;
+
+    TrackDBEntry(Long identifier) {
+        this.identifier = identifier;
+        mapname = "";
+    }
+
+    public Long getIdentifier() {
+        return identifier;
+    }
+
+    public String getMapname() {
+        return mapname;
+    }
+
+    public void setMapname(String mapname) {
+        this.mapname = mapname;
+        TrackDB.main.save();
+    }
 }

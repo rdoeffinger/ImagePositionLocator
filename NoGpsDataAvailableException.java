@@ -17,12 +17,11 @@
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
 public class NoGpsDataAvailableException extends  Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public NoGpsDataAvailableException() { }
+    public NoGpsDataAvailableException() { }
 
-    public NoGpsDataAvailableException(String message)
-    {
-       super(message);
+    public NoGpsDataAvailableException(String message) {
+        super(message);
     }
 }

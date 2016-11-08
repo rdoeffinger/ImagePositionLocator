@@ -23,100 +23,100 @@ import java.util.ArrayList;
  * a plugable backend the LDM.
  */
 public interface ILDMIOHandler {
-	
-	/**
-	 * @return all known Markers. Should not be changed.
-	 * If there is no data return empty list(not null).
-	 */
-	public ArrayList<Marker> getAllMarkers();
-	
-	/**
-	 * @return a marker with a realpoint equal
-	 * to the given one or null if none were found.
-	 */
-	public Marker getMarker(GpsPoint realpoint);
-	
-	/**
-	 * @return a marker with a imgpoint equal
-	 * to the given one or null if none were found.
-	 */
-	public Marker getMarker(Point2D imgpoint);
-	
-	/**
-	 * @return all known GpsPoints. Should not be changed.
- 	 * If there is no data return empty list(not null).
-	 */
-	public ArrayList<GpsPoint> getAllGpsPoints();
-	
-	/**
-	 * Removes last recent Marker equivalent to m 
-	 * @return if a occurrence of m was deleted
-	 */
-	public boolean removeMarker(Marker m);
-	
-	/**
-	 * Deletes all markers
-	 */
-	public void removeAllMarkers();
-	
-	/**
-	 * Calls getMarker(Point2D imgpoint), deletes the returned
-	 * Marker and returns true. If there was no fitting Marker
-	 * found returns false.
-	 */
-	boolean removeMarker(Point2D imgpoint);
 
-	/**
-	 * Calls getMarker(Point2D realpoint), deletes the returned
-	 * Marker and returns true. If there was no fitting Marker
-	 * found returns false.
-	 */
-	boolean removeMarker(GpsPoint realpoint);
-	
-	/**
-	 * Removes last recent GpsPoint equivalent to m 
-	 * @return if a occurrence of p was deleted
-	 */
-	public boolean removeGpsPoint(GpsPoint p);
-	
-	/**
-	 * Deletes all GpsPoints
-	 */
-	public void removeAllGpsPoints();
-	
-	/**
-	 * Saves m.
-	 */
-	public void addMarker(Marker m);
-	
-	/**
-	 * Saves p.
-	 */
-	public void addGpsPoint(GpsPoint p);
-	
-	/**
-	 * Sets the time when the last new GpsPoint arrived
-	 */
-	public void setLastGpsPointTime(long unixTime);
-	
-	/**
-	 * @return Gets the time when the last new GpsPoint arrived
-	 */
-	public long getLastGpsPointTime();
-	
-	/**
-	 * Assures data received up until now is persisted.
-	 */
-	public void save();
+    /**
+     * @return all known Markers. Should not be changed.
+     * If there is no data return empty list(not null).
+     */
+    public ArrayList<Marker> getAllMarkers();
 
-	/**
-	 * @return last added Marker
-	 */
-	public Marker getLastMarker();
+    /**
+     * @return a marker with a realpoint equal
+     * to the given one or null if none were found.
+     */
+    public Marker getMarker(GpsPoint realpoint);
 
-	/**
-	 * return last added GpsPoint
-	 * @return
-	 */
-	public GpsPoint getLastGpsPoint();
+    /**
+     * @return a marker with a imgpoint equal
+     * to the given one or null if none were found.
+     */
+    public Marker getMarker(Point2D imgpoint);
+
+    /**
+     * @return all known GpsPoints. Should not be changed.
+     * If there is no data return empty list(not null).
+     */
+    public ArrayList<GpsPoint> getAllGpsPoints();
+
+    /**
+     * Removes last recent Marker equivalent to m
+     * @return if a occurrence of m was deleted
+     */
+    public boolean removeMarker(Marker m);
+
+    /**
+     * Deletes all markers
+     */
+    public void removeAllMarkers();
+
+    /**
+     * Calls getMarker(Point2D imgpoint), deletes the returned
+     * Marker and returns true. If there was no fitting Marker
+     * found returns false.
+     */
+    boolean removeMarker(Point2D imgpoint);
+
+    /**
+     * Calls getMarker(Point2D realpoint), deletes the returned
+     * Marker and returns true. If there was no fitting Marker
+     * found returns false.
+     */
+    boolean removeMarker(GpsPoint realpoint);
+
+    /**
+     * Removes last recent GpsPoint equivalent to m
+     * @return if a occurrence of p was deleted
+     */
+    public boolean removeGpsPoint(GpsPoint p);
+
+    /**
+     * Deletes all GpsPoints
+     */
+    public void removeAllGpsPoints();
+
+    /**
+     * Saves m.
+     */
+    public void addMarker(Marker m);
+
+    /**
+     * Saves p.
+     */
+    public void addGpsPoint(GpsPoint p);
+
+    /**
+     * Sets the time when the last new GpsPoint arrived
+     */
+    public void setLastGpsPointTime(long unixTime);
+
+    /**
+     * @return Gets the time when the last new GpsPoint arrived
+     */
+    public long getLastGpsPointTime();
+
+    /**
+     * Assures data received up until now is persisted.
+     */
+    public void save();
+
+    /**
+     * @return last added Marker
+     */
+    public Marker getLastMarker();
+
+    /**
+     * return last added GpsPoint
+     * @return
+     */
+    public GpsPoint getLastGpsPoint();
 }

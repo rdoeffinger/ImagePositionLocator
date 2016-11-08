@@ -23,104 +23,104 @@ import java.io.Serializable;
  * and longitude.
  */
 public class GpsPoint implements Serializable {
-	private static final long serialVersionUID = 1L;
-	static private  transient double  RADIUS = 6371;  // earth's mean radius in km
-	
-	public double longitude;
-	public double latitude;
-	public long time;
-	
-	public GpsPoint(double longitude, double latitude, long time) {
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.time = time;
-	}
-	
-	/**
-	 * The new GpsPoint will be the linear weighted average
-	 * of a and b based on time.
-	 */
-	public GpsPoint(GpsPoint a, GpsPoint b, long time) {
-		this.time = time;
-		this.longitude = linInterpolation(a.time, b.time, time, a.longitude, b.longitude);
-		this.latitude = linInterpolation(a.time, b.time, time, a.latitude, b.latitude);
-	}
-	
-	/**
-	 * The new GpsPoint will be the average of a and b.
-	 */
-	public GpsPoint(GpsPoint a, GpsPoint b) {
-		this.longitude = (a.longitude + b.longitude) / 2;
-		this.latitude = (a.latitude+ b.latitude) / 2;
-		this.time = (a.time + b.time) / 2;
-	}
-	
-	/**
-	 * The new GpsPoint will be the average of a, b and c.
-	 */
-	public GpsPoint(GpsPoint a, GpsPoint b, GpsPoint c) {
-		this.longitude = (a.longitude + b.longitude + c.longitude) / 3;
-		this.latitude = (a.latitude+ b.latitude + c.latitude) / 3;
-		this.time = (a.time + b.time + c.time) / 3;
-	}
-	
-	private double linInterpolation(long atime, long btime, long time, double aval, double bval) {
-		return (bval-aval)/(btime-atime)*(time-atime)+aval;
-	}
+    private static final long serialVersionUID = 1L;
+    static private  transient double  RADIUS = 6371;  // earth's mean radius in km
 
-	public GpsPoint getOrthogonal(GpsPoint origin) {
-		  double lon_scale = Math.cos(origin.latitude);
-		  double xnew = origin.longitude - (latitude - origin.latitude) / lon_scale;
-		  double ynew = origin.latitude + (longitude - origin.longitude) * lon_scale;
-		  
-		  return new GpsPoint(xnew, ynew, this.time);
-	}
-	
-	/**
-	 * @return the distance of this point to a
-	 * assuming both are in a plane
-	 */
-	public double getPlanarDistance(GpsPoint a) {
-		double tmp = Math.sqrt(Math.pow(a.latitude - this.latitude, 2) + Math.pow(a.longitude - this.longitude, 2));
-		if (tmp != 0)
-			return tmp;
-		else
-			return Double.MIN_NORMAL;
-	}
+    public double longitude;
+    public double latitude;
+    public long time;
 
-	/**
-	 * Returns the distance from this point to the supplied point, in km (using
-	 * Haversine formula)
-	 *
-	 * from: Haversine formula - R. W. Sinnott, "Virtues of the Haversine", Sky
-	 * and Telescope, vol 68, no 2, 1984
-	 *
-	 * @this {LatLon} latitude/longitude of origin point
-	 * @param {LatLon} point: latitude/longitude of destination point
-	 * @param {Number} [precision=4]: number of significant digits to use for
-	 *        returned value
-	 * @returns {Number} distance in km between this point and destination point
-	 */
-	public double getSphericalDistance(GpsPoint point) {
+    public GpsPoint(double longitude, double latitude, long time) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.time = time;
+    }
 
-		double R = RADIUS;
-		double phi1 = this.latitude * Math.PI / 180d, lambda1 = this.longitude
-				* Math.PI / 180d;
-		double phi2 = point.latitude * Math.PI / 180d, lambda2 = point.longitude
-				* Math.PI / 180d;
-		double deltaLamda = phi2 - phi1;
-		double deltaLambda = lambda2 - lambda1;
+    /**
+     * The new GpsPoint will be the linear weighted average
+     * of a and b based on time.
+     */
+    public GpsPoint(GpsPoint a, GpsPoint b, long time) {
+        this.time = time;
+        this.longitude = linInterpolation(a.time, b.time, time, a.longitude, b.longitude);
+        this.latitude = linInterpolation(a.time, b.time, time, a.latitude, b.latitude);
+    }
 
-		double a = Math.sin(deltaLamda / 2) * Math.sin(deltaLamda / 2)
-				+ Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2)
-				* Math.sin(deltaLambda / 2);
-		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		double d = R * c;
+    /**
+     * The new GpsPoint will be the average of a and b.
+     */
+    public GpsPoint(GpsPoint a, GpsPoint b) {
+        this.longitude = (a.longitude + b.longitude) / 2;
+        this.latitude = (a.latitude+ b.latitude) / 2;
+        this.time = (a.time + b.time) / 2;
+    }
 
-		return d;
-	}
-	
-	public String toString() {
-		return "GPS<" + latitude + "," + longitude + ">";
-	}
+    /**
+     * The new GpsPoint will be the average of a, b and c.
+     */
+    public GpsPoint(GpsPoint a, GpsPoint b, GpsPoint c) {
+        this.longitude = (a.longitude + b.longitude + c.longitude) / 3;
+        this.latitude = (a.latitude+ b.latitude + c.latitude) / 3;
+        this.time = (a.time + b.time + c.time) / 3;
+    }
+
+    private double linInterpolation(long atime, long btime, long time, double aval, double bval) {
+        return (bval-aval)/(btime-atime)*(time-atime)+aval;
+    }
+
+    public GpsPoint getOrthogonal(GpsPoint origin) {
+        double lon_scale = Math.cos(origin.latitude);
+        double xnew = origin.longitude - (latitude - origin.latitude) / lon_scale;
+        double ynew = origin.latitude + (longitude - origin.longitude) * lon_scale;
+
+        return new GpsPoint(xnew, ynew, this.time);
+    }
+
+    /**
+     * @return the distance of this point to a
+     * assuming both are in a plane
+     */
+    public double getPlanarDistance(GpsPoint a) {
+        double tmp = Math.sqrt(Math.pow(a.latitude - this.latitude, 2) + Math.pow(a.longitude - this.longitude, 2));
+        if (tmp != 0)
+            return tmp;
+        else
+            return Double.MIN_NORMAL;
+    }
+
+    /**
+     * Returns the distance from this point to the supplied point, in km (using
+     * Haversine formula)
+     *
+     * from: Haversine formula - R. W. Sinnott, "Virtues of the Haversine", Sky
+     * and Telescope, vol 68, no 2, 1984
+     *
+     * @this {LatLon} latitude/longitude of origin point
+     * @param {LatLon} point: latitude/longitude of destination point
+     * @param {Number} [precision=4]: number of significant digits to use for
+     *        returned value
+     * @returns {Number} distance in km between this point and destination point
+     */
+    public double getSphericalDistance(GpsPoint point) {
+
+        double R = RADIUS;
+        double phi1 = this.latitude * Math.PI / 180d, lambda1 = this.longitude
+                      * Math.PI / 180d;
+        double phi2 = point.latitude * Math.PI / 180d, lambda2 = point.longitude
+                      * Math.PI / 180d;
+        double deltaLamda = phi2 - phi1;
+        double deltaLambda = lambda2 - lambda1;
+
+        double a = Math.sin(deltaLamda / 2) * Math.sin(deltaLamda / 2)
+                   + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2)
+                   * Math.sin(deltaLambda / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
+
+        return d;
+    }
+
+    public String toString() {
+        return "GPS<" + latitude + "," + longitude + ">";
+    }
 }
