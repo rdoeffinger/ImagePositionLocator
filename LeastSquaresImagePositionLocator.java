@@ -46,8 +46,8 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
                 return new Point2D(m.imgpoint.x, m.imgpoint.y);
             }
         }
-        // Multiple A and b by transpose(A)*weigths
-        // TODO: review weigths, they are supposed to be
+        // Multiple A and b by transpose(A)*weights
+        // TODO: review weights, they are supposed to be
         // inversely proportional to datapoint reliability.
         // 1/distance^2 is cheap but just a wild guess, and
         // GPS signal quality when marker was set could
@@ -90,7 +90,7 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
         double inverse2 = AtWA00 * AtWA11 - AtWA01 * AtWA01;
         // Use inverse matrix to solve linear system
         // The last coefficient is the offset between the coordinate systems.
-        // As we recentered GPS to our current position, the offset is our map position
+        // As we re-centered GPS to our current position, the offset is our map position
         double posx = inverse0 * bx30 + inverse1 * bx31 + inverse2 * bx32;
         posx /= detAtWA;
         double posy = inverse0 * by30 + inverse1 * by31 + inverse2 * by32;
