@@ -26,12 +26,16 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
     public LeastSquaresImagePositionLocator() {
     }
 
-    public Point2D getPointPosition(GpsPoint currentPosition) {
-        if (markers == null || markers.size() <= 2 || currentPosition == null)
-            return null;
-        // Recenter for better numerical stability
-        double cur_lon = currentPosition.longitude;
-        double cur_lat = currentPosition.latitude;
+    private class PairResult {
+        public PairResult(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public double x, y;
+    }
+
+    public PairResult solve(double cur_lon, double cur_lat, boolean g2p) {
         // Build linear system to solve to get coordinate
         // transform - separately for x and y
         // Need a 3rd constant 1 input to represent translations
@@ -39,11 +43,12 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
         // While at it calculate the minimum distance as well.
         double mindist = Double.POSITIVE_INFINITY;
         for (Marker m : markers) {
-            double lon = m.realpoint.longitude - cur_lon;
-            double lat = m.realpoint.latitude - cur_lat;
+            double lon = (g2p ? m.realpoint.longitude : m.imgpoint.x) - cur_lon;
+            double lat = (g2p ? m.realpoint.latitude : m.imgpoint.y) - cur_lat;
             mindist = Math.min(mindist, lon * lon + lat * lat);
             if (mindist == 0) {
-                return new Point2D(m.imgpoint.x, m.imgpoint.y);
+                return g2p ? new PairResult(m.imgpoint.x, m.imgpoint.y) :
+                             new PairResult(m.realpoint.longitude, m.realpoint.latitude);
             }
         }
         // Multiple A and b by transpose(A)*weights
@@ -56,11 +61,13 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
         double by30 = 0, by31 = 0, by32 = 0;
         double AtWA00 = 0, AtWA01 = 0, AtWA02 = 0, AtWA11 = 0, AtWA12 = 0, AtWA22 = 0;
         for (Marker m : markers) {
-            double a0 = m.realpoint.longitude - cur_lon, a1 = m.realpoint.latitude - cur_lat;
+            // Recenter for better numerical stability
+            double a0 = (g2p ? m.realpoint.longitude : m.imgpoint.x) - cur_lon,
+                   a1 = (g2p ? m.realpoint.latitude : m.imgpoint.y) - cur_lat;
             double weight = mindist / (a0 * a0 + a1 * a1);
             double wa0 = a0 * weight, wa1 = a1 * weight, wa2 = weight;
-            double bx = m.imgpoint.x;
-            double by = m.imgpoint.y;
+            double bx = g2p ? m.imgpoint.x : m.realpoint.longitude;
+            double by = g2p ? m.imgpoint.y : m.realpoint.latitude;
             bx30 += bx * wa0;
             bx31 += bx * wa1;
             bx32 += bx * wa2;
@@ -95,8 +102,21 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
         posx /= detAtWA;
         double posy = inverse0 * by30 + inverse1 * by31 + inverse2 * by32;
         posy /= detAtWA;
-        // Apply found coordinate transformation
-        return new Point2D(posx, posy);
+        return new PairResult(posx, posy);
+    }
+
+    public Point2D getPointPosition(GpsPoint currentPosition) {
+        if (markers == null || markers.size() <= 2 || currentPosition == null)
+            return null;
+        PairResult pos = solve(currentPosition.longitude, currentPosition.latitude, true);
+        return new Point2D(pos.x, pos.y);
+    }
+
+    public GpsPoint getGpsPosition(Point2D currentPosition) {
+        if (markers == null || markers.size() <= 2 || currentPosition == null)
+            return null;
+        PairResult pos = solve(currentPosition.x, currentPosition.y, false);
+        return new GpsPoint(pos.x, pos.y, 0);
     }
 
     public void newMarkerAdded(List<Marker> markers) {

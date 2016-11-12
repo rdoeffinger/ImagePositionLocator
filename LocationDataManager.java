@@ -172,6 +172,10 @@ public class LocationDataManager {
         }
     }
 
+    public GpsPoint getGpsPosition(Point2D pos) {
+        return imagePositionAlg.getGpsPosition(pos);
+    }
+
     /**
      * Signals the host application that a new point was found.
      *
