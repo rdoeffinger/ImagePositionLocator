@@ -36,7 +36,7 @@ public class LDMIOTrack implements ILDMIOHandler {
     String filename;
 
     //Denotes the highest supported .track version
-    int protVersionNumber = 3;
+    int protVersionNumber = 4;
 
     ArrayList<GpsPoint> gpspath;
     ArrayList<Marker> markers;
@@ -51,6 +51,7 @@ public class LDMIOTrack implements ILDMIOHandler {
         try {
             switch (protVersionNumber) {
             case 3:
+            case 4:
                 gpspath = (ArrayList<GpsPoint>) ois.readObject();
                 markers = (ArrayList<Marker>) ois.readObject();
                 break;
@@ -63,6 +64,23 @@ public class LDMIOTrack implements ILDMIOHandler {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
+        }
+        if (protVersionNumber == 3) {
+            // Fixup swapped lat/lon values
+            for (GpsPoint p : gpspath) {
+                double t = p.latitude;
+                p.latitude = p.longitude;
+                p.longitude = t;
+            }
+            for (Marker m : markers) {
+                if (m.realpoint == null) continue;
+                // ensure no double-swapping
+                if (gpspath.contains(m.realpoint)) continue;
+                double t = m.realpoint.latitude;
+                m.realpoint.latitude = m.realpoint.longitude;
+                m.realpoint.longitude = t;
+            }
+            protVersionNumber = 4;
         }
         return true;
     }
