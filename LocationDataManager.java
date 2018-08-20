@@ -215,7 +215,7 @@ public class LocationDataManager {
      * @return The previous state of isSpeedFiltering
      */
     public boolean setSpeedFiltering(boolean isSpeedFiltering) {
-        boolean tmp = isSpeedFiltering;
+        boolean tmp = this.isSpeedFiltering;
         this.isSpeedFiltering = isSpeedFiltering;
         return tmp;
     }
