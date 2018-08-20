@@ -43,8 +43,8 @@ public class TrackDB implements Serializable {
     //Singleton db
     public static TrackDB main = null;
 
-    private File baseDir;
-    private File dbFile;
+    private final File baseDir;
+    private final File dbFile;
 
     private HashMap<Long, TrackDBEntry> maps;
     private long lastIdentifier;
@@ -106,7 +106,7 @@ public class TrackDB implements Serializable {
      * loads track.conf file from dbDir
      * @throws IOException
      */
-    TrackDB(File dbDir) throws IOException {
+    private TrackDB(File dbDir) throws IOException {
         baseDir = dbDir;
         dbFile = new File(dbDir + File.separator + configFileName);
         File backup = new File(dbDir + File.separator + configFileName + ".bak");
@@ -139,7 +139,7 @@ public class TrackDB implements Serializable {
             long number = 0;
             try {
                 number = Long.parseLong(name);
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
             if (number > 0 && maps.get(number) == null) {
                 System.err.println("Found lost map " + name);
                 TrackDBEntry tmp = new TrackDBEntry(number);

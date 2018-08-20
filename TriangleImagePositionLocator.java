@@ -30,10 +30,10 @@ import java.util.List;
  * Point2D's based on Markers
  */
 public class TriangleImagePositionLocator implements ImagePositionLocator {
-    IPLSettingsContainer settings;
+    private final IPLSettingsContainer settings;
 
     private ArrayList<ProjectionTriangle> projs;
-    private Point2D imageSize;
+    private final Point2D imageSize;
 
     public TriangleImagePositionLocator(Point2D imageSize, IPLSettingsContainer settings) {
         this.imageSize = imageSize;

@@ -28,23 +28,23 @@ import java.util.concurrent.Callable;
  */
 public class LocationDataManager {
     // seconds until would be accepted
-    static final int MAX_POINT_DENIAL_TIME = 10;
+    private static final int MAX_POINT_DENIAL_TIME = 10;
     // accepted movement speed in meters per second
-    static final int MAX_MOVEMENT_SPEED = 20;
+    private static final int MAX_MOVEMENT_SPEED = 20;
     // seconds untill the last GpsPoint cannot be used as a marker anymore
-    static final int MAX_VALID_GPS_TIME = 30;
+    private static final int MAX_VALID_GPS_TIME = 30;
 
     // track data
-    Point2D imageSize;
-    long lastGPSFixTime;
-    boolean isSpeedFiltering = true;
+    private final Point2D imageSize;
+    private long lastGPSFixTime;
+    private boolean isSpeedFiltering = true;
 
     // Session data
-    ILDMIOHandler iohandler;
-    ImagePositionLocator imagePositionAlg;
-    Callable<Void> hostAppCallback;
-    Point2D lastImagePoint;
-    GpsPoint lastGpsPoint;
+    private ILDMIOHandler iohandler;
+    private final ImagePositionLocator imagePositionAlg;
+    private final Callable<Void> hostAppCallback;
+    private Point2D lastImagePoint;
+    private GpsPoint lastGpsPoint;
 
     /**
      * Create new LocationDataManager and inits algorithm

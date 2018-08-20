@@ -23,18 +23,18 @@ import java.util.List;
  * Projects points from GPS to image coords.
  * Triple of Marker.
  */
-public class ProjectionTriangle {
+class ProjectionTriangle {
     private double MIN_TRIANGLE_ANGLE_SIZE;
     private double FLAT_TRI_WEIGHT_PENALTY;
     private double MAX_DISSIMILARITY_PERCENT;
 
     private double weight = 1; //[0..1]
-    private GpsPoint pivot;
+    private final GpsPoint pivot;
     private Marker a;
     private Marker b;
     private Marker c;
     private double common_divisor;
-    public List<ProjectionTriangle> projectionGroup;
+    private List<ProjectionTriangle> projectionGroup;
     private GpsPoint cachedInput;
     private FPoint2D cachedResult;
 
@@ -87,7 +87,7 @@ public class ProjectionTriangle {
         return this.pivot;
     }
 
-    public Marker getMarker(int i) {
+    private Marker getMarker(int i) {
         switch (i) {
         case 0:
             return a;
@@ -110,7 +110,7 @@ public class ProjectionTriangle {
      * @param sideC Distance C
      * @return If the triangle has no angle less than minAngle(in degrees).
      */
-    public boolean isValidTriangle(double sideA, double sideB, double sideC, double minAngle) {
+    private boolean isValidTriangle(double sideA, double sideB, double sideC, double minAngle) {
         if (Math.acos((sideA*sideA+sideB*sideB-sideC*sideC)/(2*sideA*sideB)) < Math.toRadians(minAngle)) return false;
         if (Math.acos((sideC*sideC+sideB*sideB-sideA*sideA)/(2*sideC*sideB)) < Math.toRadians(minAngle)) return false;
         if (Math.acos((sideA*sideA+sideC*sideC-sideB*sideB)/(2*sideA*sideC)) < Math.toRadians(minAngle)) return false;
@@ -143,7 +143,7 @@ public class ProjectionTriangle {
      * Formula taken from https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Conversion_between_barycentric_and_Cartesian_coordinates
      * @return new image position
      */
-    public FPoint2D projectSingle(GpsPoint pos) {
+    private FPoint2D projectSingle(GpsPoint pos) {
         if (pos != cachedInput) {
             double delta1 = ((b.realpoint.latitude - c.realpoint.latitude) * (pos.longitude - c.realpoint.longitude)
                              +(c.realpoint.longitude - b.realpoint.longitude) * (pos.latitude - c.realpoint.latitude))/ common_divisor;

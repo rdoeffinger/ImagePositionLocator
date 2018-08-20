@@ -24,8 +24,8 @@ import java.io.Serializable;
 public class Point2D implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public int x;
-    public int y;
+    public final int x;
+    public final int y;
 
     public Point2D (int x, int y) {
         this.x = x;

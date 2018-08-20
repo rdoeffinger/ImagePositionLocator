@@ -24,11 +24,11 @@ import java.io.Serializable;
  */
 public class GpsPoint implements Serializable {
     private static final long serialVersionUID = 1L;
-    static private  transient double  RADIUS = 6371;  // earth's mean radius in km
+    static private final transient double  RADIUS = 6371;  // earth's mean radius in km
 
     public double longitude;
     public double latitude;
-    public long time;
+    public final long time;
 
     public GpsPoint(double longitude, double latitude, long time) {
         this.latitude = latitude;

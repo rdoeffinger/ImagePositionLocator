@@ -28,7 +28,7 @@ public class IPLSettingsContainer {
     private double maxDissimilarityPercent;
     private boolean debugOutputEnabled;
 
-    public IPLSettingsContainer(double fallofExponent, double minTriAngleSize, double badTriWeightPenalty, double maxDissimilarityPercent, boolean debugOutputEnabled) {
+    private IPLSettingsContainer(double fallofExponent, double minTriAngleSize, double badTriWeightPenalty, double maxDissimilarityPercent, boolean debugOutputEnabled) {
         setFallofExponent(fallofExponent);
         setMinTriAngleSize(minTriAngleSize);
         setBadTriWeightPenalty(badTriWeightPenalty);
@@ -40,7 +40,7 @@ public class IPLSettingsContainer {
         return fallofExponent;
     }
 
-    public void setFallofExponent(double fallofExponent) {
+    private void setFallofExponent(double fallofExponent) {
         this.fallofExponent = fallofExponent;
     }
 
@@ -48,7 +48,7 @@ public class IPLSettingsContainer {
         return minTriAngleSize;
     }
 
-    public void setMinTriAngleSize(double minTriAngleSize) {
+    private void setMinTriAngleSize(double minTriAngleSize) {
         this.minTriAngleSize = minTriAngleSize;
     }
 
@@ -56,7 +56,7 @@ public class IPLSettingsContainer {
         return badTriWeightPenalty;
     }
 
-    public void setBadTriWeightPenalty(double badTriWeightPenalty) {
+    private void setBadTriWeightPenalty(double badTriWeightPenalty) {
         this.badTriWeightPenalty = badTriWeightPenalty;
     }
 
@@ -64,7 +64,7 @@ public class IPLSettingsContainer {
         return maxDissimilarityPercent;
     }
 
-    public void setMaxDissimilarityPercent(double maxDissimilarityPercent) {
+    private void setMaxDissimilarityPercent(double maxDissimilarityPercent) {
         this.maxDissimilarityPercent = maxDissimilarityPercent;
     }
 
@@ -72,7 +72,7 @@ public class IPLSettingsContainer {
         return debugOutputEnabled;
     }
 
-    public void setDebugOutputEnabled(boolean debugOutputEnabled) {
+    private void setDebugOutputEnabled(boolean debugOutputEnabled) {
         this.debugOutputEnabled = debugOutputEnabled;
     }
 }

@@ -27,7 +27,7 @@ import java.io.ObjectStreamClass;
  * Note: Using Java serialization is something you will ALWAYS end up regretting,
  * please NEVER use it.
  */
-public class TranslateObjectInputStream extends ObjectInputStream {
+class TranslateObjectInputStream extends ObjectInputStream {
     TranslateObjectInputStream(InputStream in) throws IOException {
         super(in);
     }

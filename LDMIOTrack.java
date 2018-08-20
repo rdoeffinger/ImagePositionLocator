@@ -33,14 +33,14 @@ import de.hu_berlin.informatik.spws2014.mapever.FileUtils;
  * Saves only when save is called.
  */
 public class LDMIOTrack implements ILDMIOHandler {
-    String filename;
+    private final String filename;
 
     //Denotes the highest supported .track version
-    int protVersionNumber = 4;
+    private int protVersionNumber = 4;
 
-    ArrayList<GpsPoint> gpspath;
-    ArrayList<Marker> markers;
-    long time;
+    private ArrayList<GpsPoint> gpspath;
+    private ArrayList<Marker> markers;
+    private long time;
 
     /**
      * Reads track format.

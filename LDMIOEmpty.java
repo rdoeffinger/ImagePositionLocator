@@ -24,9 +24,9 @@ import java.util.ArrayList;
  */
 public class LDMIOEmpty implements ILDMIOHandler {
 
-    ArrayList<GpsPoint> gpspath = new ArrayList<>();
-    ArrayList<Marker> markers = new ArrayList<>();
-    long time;
+    private ArrayList<GpsPoint> gpspath = new ArrayList<>();
+    private ArrayList<Marker> markers = new ArrayList<>();
+    private long time;
 
     @Override
     public ArrayList<Marker> getAllMarkers() {

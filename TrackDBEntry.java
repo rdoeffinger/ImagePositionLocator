@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class TrackDBEntry implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long identifier;
+    private final Long identifier;
     private String mapname;
 
     TrackDBEntry(Long identifier) {

@@ -27,15 +27,16 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
     }
 
     private class PairResult {
-        public PairResult(double x, double y) {
+        PairResult(double x, double y) {
             this.x = x;
             this.y = y;
         }
 
-        public double x, y;
+        final double x;
+        final double y;
     }
 
-    public PairResult solve(double cur_lon, double cur_lat, boolean g2p) {
+    private PairResult solve(double cur_lon, double cur_lat, boolean g2p) {
         // Build linear system to solve to get coordinate
         // transform - separately for x and y
         // Need a 3rd constant 1 input to represent translations
