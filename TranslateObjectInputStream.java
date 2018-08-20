@@ -39,8 +39,7 @@ public class TranslateObjectInputStream extends ObjectInputStream {
         String newName = null;
 
         if (name.startsWith("de.hu_berlin.informatik.spws2014.imagePositionLocator")) {
-            newName = name;
-            newName.replace("de.hu_berlin.informatik.spws2014.imagePositionLocator", "de.hu_berlin.informatik.spws2014.ImagePositionLocator");
+            newName = name.replace("de.hu_berlin.informatik.spws2014.imagePositionLocator", "de.hu_berlin.informatik.spws2014.ImagePositionLocator");
         }
         if (name.equals("de.hu_berlin.informatik.spws2014.a.p")) newName = "de.hu_berlin.informatik.spws2014.ImagePositionLocator.TrackDBEntry";
         if (name.equals("de.hu_berlin.informatik.spws2014.a.b")) newName = "de.hu_berlin.informatik.spws2014.ImagePositionLocator.GpsPoint";
