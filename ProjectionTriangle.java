@@ -24,7 +24,7 @@ import java.util.List;
  * Triple of Marker.
  */
 class ProjectionTriangle {
-    private double MIN_TRIANGLE_ANGLE_SIZE;
+    private double MIN_TRIANGLE_ANGLE_COS;
     private double FLAT_TRI_WEIGHT_PENALTY;
     private double MAX_DISSIMILARITY_PERCENT;
 
@@ -51,7 +51,7 @@ class ProjectionTriangle {
     }
 
     public ProjectionTriangle(Marker a, Marker b, Marker c, double MaxDissim, double BadTriPanelty, double GoodTriMinAngle) {
-        MIN_TRIANGLE_ANGLE_SIZE = GoodTriMinAngle;
+        MIN_TRIANGLE_ANGLE_COS = Math.cos(Math.toRadians(GoodTriMinAngle));
         FLAT_TRI_WEIGHT_PENALTY = BadTriPanelty;
         MAX_DISSIMILARITY_PERCENT = MaxDissim;
 
@@ -70,12 +70,10 @@ class ProjectionTriangle {
 
         if (!isValidTriangle(a.realpoint.getPlanarDistance(b.realpoint),
                              a.realpoint.getPlanarDistance(c.realpoint),
-                             b.realpoint.getPlanarDistance(c.realpoint),
-                             MIN_TRIANGLE_ANGLE_SIZE)
+                             b.realpoint.getPlanarDistance(c.realpoint))
                 || !isValidTriangle(a.imgpoint.getDistance(b.imgpoint),
                                     a.imgpoint.getDistance(c.imgpoint),
-                                    b.imgpoint.getDistance(c.imgpoint),
-                                    MIN_TRIANGLE_ANGLE_SIZE)) {
+                                    b.imgpoint.getDistance(c.imgpoint))) {
             weight *= FLAT_TRI_WEIGHT_PENALTY;
         }
 
@@ -108,14 +106,14 @@ class ProjectionTriangle {
      * @param sideA Distance A
      * @param sideB Distance B
      * @param sideC Distance C
-     * @return If the triangle has no angle less than minAngle(in degrees).
+     * @return If the triangle has no angle less than acos(MIN_TRIANGLE_ANGLE_SIZE_COS).
      */
-    private boolean isValidTriangle(double sideA, double sideB, double sideC, double minAngle) {
-        if (Math.acos((sideA*sideA+sideB*sideB-sideC*sideC)/(2*sideA*sideB)) < Math.toRadians(minAngle)) return false;
-        if (Math.acos((sideC*sideC+sideB*sideB-sideA*sideA)/(2*sideC*sideB)) < Math.toRadians(minAngle)) return false;
-        if (Math.acos((sideA*sideA+sideC*sideC-sideB*sideB)/(2*sideA*sideC)) < Math.toRadians(minAngle)) return false;
-
-        return true;
+    private boolean isValidTriangle(double sideA, double sideB, double sideC) {
+        // We compare the cosine of the angles, which must be smaller than the limit
+        // for the angles to be larger than the limit
+        return (sideA*sideA+sideB*sideB-sideC*sideC)/(2*sideA*sideB) <= MIN_TRIANGLE_ANGLE_COS &&
+               (sideC*sideC+sideB*sideB-sideA*sideA)/(2*sideC*sideB) <= MIN_TRIANGLE_ANGLE_COS &&
+               (sideA*sideA+sideC*sideC-sideB*sideB)/(2*sideA*sideC) <= MIN_TRIANGLE_ANGLE_COS;
     }
 
     /**
@@ -128,10 +126,7 @@ class ProjectionTriangle {
 
         for (ProjectionTriangle t : projectionGroup) {
             //own projection is more important than the rest of the projGroup
-            if (t == this)
-                result.fma(t.projectSingle(pos), ownPriority);
-            else
-                result.fma(t.projectSingle(pos), 1);
+            result.fma(t.projectSingle(pos), t == this ? ownPriority : 1);
         }
         result.div(projectionGroup.size() - 1 + ownPriority);
 
