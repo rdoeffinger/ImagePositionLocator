@@ -108,10 +108,7 @@ public class LocationDataManager {
         if (lastGpsPoint == null)
             return false;
 
-        if ((System.currentTimeMillis() - lastGPSFixTime) / 1000 > MAX_VALID_GPS_TIME)
-            return false;
-
-        return true;
+        return (System.currentTimeMillis() - lastGPSFixTime) / 1000 <= MAX_VALID_GPS_TIME;
     }
 
     /**
