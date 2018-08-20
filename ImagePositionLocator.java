@@ -9,7 +9,7 @@ public interface ImagePositionLocator {
      * @param currentPosition
      * @return new image point
      */
-    public Point2D getPointPosition(GpsPoint currentPosition);
+    Point2D getPointPosition(GpsPoint currentPosition);
 
     /**
      * Reverse operation of getPointPosition.
@@ -18,11 +18,11 @@ public interface ImagePositionLocator {
      * getPointPosition(getGpsPosition(a)) == a or
      * getGpsPosition(getPointPosition(a)) == a.
      */
-    public GpsPoint getGpsPosition(Point2D imagePosition);
+    GpsPoint getGpsPosition(Point2D imagePosition);
 
     /**
      * Add new list of markers to algorithm knowledge
      */
-    public void newMarkerAdded(List<Marker> markers);
+    void newMarkerAdded(List<Marker> markers);
 
 }
