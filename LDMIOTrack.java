@@ -100,8 +100,8 @@ public class LDMIOTrack implements ILDMIOHandler {
             fis.close();
         }
         if (!isFileValid || gpspath == null || markers == null) {
-            gpspath = new ArrayList<GpsPoint>();
-            markers = new ArrayList<Marker>();
+            gpspath = new ArrayList<>();
+            markers = new ArrayList<>();
         }
     }
 
@@ -174,7 +174,7 @@ public class LDMIOTrack implements ILDMIOHandler {
 
     @Override
     public void removeAllMarkers() {
-        markers = new ArrayList<Marker>();
+        markers = new ArrayList<>();
     }
 
     @Override
@@ -184,7 +184,7 @@ public class LDMIOTrack implements ILDMIOHandler {
 
     @Override
     public void removeAllGpsPoints() {
-        gpspath = new ArrayList<GpsPoint>();
+        gpspath = new ArrayList<>();
     }
 
     @Override

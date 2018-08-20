@@ -77,13 +77,12 @@ public class LocationDataManager {
             return;
 
         boolean conforms = false;
-        double elapsedTime = 0;
         double movementSpeed = 0;
 
         if (lastGpsPoint == null || ((input.time - lastGpsPoint.time) / 1000) >= MAX_POINT_DENIAL_TIME) {
             conforms = true;
         } else {
-            elapsedTime = ((input.time - lastGpsPoint.time) / 1000);
+            double elapsedTime = ((input.time - lastGpsPoint.time) / 1000);
             movementSpeed = lastGpsPoint.getSphericalDistance(input) / elapsedTime / 1000;
 
             if (movementSpeed < MAX_MOVEMENT_SPEED)

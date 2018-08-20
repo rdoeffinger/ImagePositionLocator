@@ -26,7 +26,7 @@ public class Marker implements Serializable {
 
     public long time;
     public Point2D imgpoint;
-    public GpsPoint realpoint = null;
+    public GpsPoint realpoint;
 
     public Marker(Point2D imgpoint, long time, GpsPoint a) {
         this.imgpoint = imgpoint;

@@ -79,7 +79,7 @@ public class ProjectionTriangle {
             weight *= FLAT_TRI_WEIGHT_PENALTY;
         }
 
-        projectionGroup = new ArrayList<ProjectionTriangle>();
+        projectionGroup = new ArrayList<>();
         projectionGroup.add(this);
     }
 

@@ -123,7 +123,7 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
         // TODO: Run a trial run of the solver to check quality of points.
         // If bad, display a warning. Possibly try to find outliers
         // and suggest for correction
-        this.markers = new ArrayList<Marker>(markers);
+        this.markers = new ArrayList<>(markers);
         if (this.markers.size() == 2) {
             // Note: this can only work if both map and
             // GPS have identical scales in X and Y direction.

@@ -93,7 +93,7 @@ public class TriangleImagePositionLocator implements ImagePositionLocator {
 
         if (markers.size() == 2) {
             //Guess third marker
-            projs = new ArrayList<ProjectionTriangle>();
+            projs = new ArrayList<>();
             projs.add(new ProjectionTriangle(markers.get(0), markers.get(1)));
         } else {
             Subdiv2D subdiv = new Subdiv2D();
@@ -108,7 +108,7 @@ public class TriangleImagePositionLocator implements ImagePositionLocator {
             subdiv.getTriangleList(mafloat);
             float[] tmparray = mafloat.toArray();
 
-            ArrayList<ProjectionTriangle> tmplist = new ArrayList<ProjectionTriangle>();
+            ArrayList<ProjectionTriangle> tmplist = new ArrayList<>();
             for (int i = 0; i < tmparray.length; i += 6) {
                 Marker m1 = findMarkerByPoint(markers, tmparray[i], tmparray[i + 1]);
                 Marker m2 = findMarkerByPoint(markers, tmparray[i + 2], tmparray[i + 3]);

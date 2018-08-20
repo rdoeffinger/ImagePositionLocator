@@ -24,8 +24,8 @@ import java.util.ArrayList;
  */
 public class LDMIOEmpty implements ILDMIOHandler {
 
-    ArrayList<GpsPoint> gpspath = new ArrayList<GpsPoint>();
-    ArrayList<Marker> markers = new ArrayList<Marker>();
+    ArrayList<GpsPoint> gpspath = new ArrayList<>();
+    ArrayList<Marker> markers = new ArrayList<>();
     long time;
 
     @Override
@@ -106,7 +106,7 @@ public class LDMIOEmpty implements ILDMIOHandler {
 
     @Override
     public void removeAllMarkers() {
-        markers = new ArrayList<Marker>();
+        markers = new ArrayList<>();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class LDMIOEmpty implements ILDMIOHandler {
 
     @Override
     public void removeAllGpsPoints() {
-        gpspath = new ArrayList<GpsPoint>();
+        gpspath = new ArrayList<>();
     }
 
     @Override

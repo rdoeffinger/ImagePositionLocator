@@ -69,20 +69,11 @@ public class Point2D implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        } else if (o.getClass() == Point2D.class) {
-            return this.equals((Point2D) o);
-        } else {
-            return false;
-        }
+        return o != null && o.getClass() == Point2D.class && this.equals((Point2D) o);
     }
 
     public boolean equals(Point2D p) {
-        if (p == null)
-            return false;
-        else
-            return this.x == p.x && this.y == p.y;
+        return p != null && this.x == p.x && this.y == p.y;
     }
 
     @Override

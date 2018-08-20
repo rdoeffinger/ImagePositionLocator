@@ -125,7 +125,7 @@ public class TrackDB implements Serializable {
 
         if (!isFileValid) {
             System.err.println("Could not read file. Creating new trackDB in " + dbFile);
-            maps = new HashMap<Long, TrackDBEntry>();
+            maps = new HashMap<>();
             lastIdentifier = FIRST_IDENTIFIER;
         }
 
@@ -158,6 +158,7 @@ public class TrackDB implements Serializable {
     public boolean delete(TrackDBEntry map) {
         if (maps.remove(map.getIdentifier()) != null) {
             save();
+            //noinspection ResultOfMethodCallIgnored
             new File(baseDir + File.separator + map.getIdentifier() + ".track").delete();
             return true;
         } else {
