@@ -16,14 +16,10 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
-import java.io.Serializable;
-
 /**
  * A tuple of GpsPoint and Point2D.
  */
-public class Marker implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Marker {
     public final long time;
     public final Point2D imgpoint;
     public GpsPoint realpoint;
