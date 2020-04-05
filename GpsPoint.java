@@ -16,14 +16,11 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
-import java.io.Serializable;
-
 /**
  * Represents a point defined by latitude
  * and longitude.
  */
-public class GpsPoint implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class GpsPoint {
     static private final transient double  RADIUS = 6371;  // earth's mean radius in km
 
     public double longitude;

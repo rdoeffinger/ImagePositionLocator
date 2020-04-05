@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -34,10 +33,9 @@ import de.hu_berlin.informatik.spws2014.mapever.FileUtils;
  * track files in a directory. Saves data in a track.conf file
  * in the passed directory.
  */
-public class TrackDB implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class TrackDB {
     private static final String configFileName = "track.conf";
-    private static final int versionNumber = 0;
+    private static final int versionNumber = 1;
     private static final int FIRST_IDENTIFIER = 1;
 
     //Singleton db
@@ -84,22 +82,22 @@ public class TrackDB implements Serializable {
 
     @SuppressWarnings("unchecked")
     private boolean versionDependendLoad(ObjectInputStream ois) throws IOException {
-        try {
-            int thisVersion = ois.readInt();
-            switch (thisVersion) {
-            case 0:
-                maps = (HashMap<Long, TrackDBEntry>) ois.readObject();
-                lastIdentifier = ois.readLong();
-                break;
-            default:
-                System.err.println("Unsupported version number: " + thisVersion + "!");
-                return false;
+        int thisVersion = ois.readInt();
+        switch (thisVersion) {
+        case 1:
+            maps = new HashMap<Long, TrackDBEntry>();
+            long count = ois.readLong();
+            for (long i = 0; i < count; i++) {
+                TrackDBEntry tmp = new TrackDBEntry(ois);
+                maps.put(tmp.getIdentifier(), tmp);
             }
-            return true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            lastIdentifier = ois.readLong();
+            break;
+        default:
+            System.err.println("Unsupported version number: " + thisVersion + "!");
             return false;
         }
+        return true;
     }
 
     /**
@@ -208,7 +206,11 @@ public class TrackDB implements Serializable {
             ObjectOutputStream oos = new ObjectOutputStream(fis);
 
             oos.writeInt(versionNumber);
-            oos.writeObject(maps);
+            oos.writeLong(maps.size());
+            for (TrackDBEntry e : maps.values())
+            {
+                e.save(oos);
+            }
             oos.writeLong(lastIdentifier);
 
             oos.close();
