@@ -47,7 +47,7 @@ public class TrackDBEntry {
         minlat = ois.readDouble();
         minlon = ois.readDouble();
         maxlat = ois.readDouble();
-        minlon = ois.readDouble();
+        maxlon = ois.readDouble();
     }
 
     public void save(ObjectOutputStream oos) throws IOException {

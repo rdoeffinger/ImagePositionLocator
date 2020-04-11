@@ -113,7 +113,7 @@ public class TrackDB {
         if (isFileValid) {
             System.err.println("All OK.");
             FileInputStream fis = new FileInputStream(dbFile);
-            ObjectInputStream ois = new TranslateObjectInputStream(fis);
+            ObjectInputStream ois = new ObjectInputStream(fis);
             isFileValid = versionDependendLoad(ois);
             if (!isFileValid && !backup.exists())
                 FileUtils.copyFileToFile(dbFile, backup);
