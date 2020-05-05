@@ -37,11 +37,6 @@ public class Point2D implements Serializable {
         this.y = (int) y;
     }
 
-    public Point2D(FPoint2D a) {
-        this.x = (int) a.x;
-        this.y = (int) a.y;
-    }
-
     public Point2D getOrthogonal(Point2D origin) {
         // Turn opposite to GPS as y axis goes down, not up
         double xnew = origin.x + (y - origin.y);
@@ -53,10 +48,6 @@ public class Point2D implements Serializable {
         double tmp = Math.sqrt(Math.pow(a.x - this.x, 2) + Math.pow(a.y - this.y, 2));
         if (tmp != 0) return tmp;
         else return Double.MIN_NORMAL;
-    }
-
-    public double getDistance(FPoint2D inp) {
-        return this.getDistance(new Point2D(inp));
     }
 
     public boolean smallerThan(Point2D inp) {

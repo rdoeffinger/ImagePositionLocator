@@ -258,16 +258,6 @@ public class LDMIOTrack implements ILDMIOHandler {
                        + m.realpoint.latitude + ", " + m.realpoint.longitude);
     }
 
-    /**
-     * Writes into track format.
-     */
-    private void writeTrackFile(ObjectOutputStream oos) throws IOException {
-        oos.writeInt(protVersionNumber);
-        oos.writeObject(gpspath);
-        oos.writeObject(markers);
-        oos.writeLong(time);
-    }
-
     @Override
     public void save() {
         File dbgTrackfile = new File(filename);
