@@ -203,7 +203,7 @@ public class LocationDataManager {
      */
     public int remainingUserMarkerInputs() {
         int tmp = 3 - iohandler.getAllMarkers().size();
-        return (tmp < 0) ? 0 : tmp;
+        return Math.max(tmp, 0);
     }
 
     /**

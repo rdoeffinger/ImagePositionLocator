@@ -52,7 +52,7 @@ public class TriangleImagePositionLocator implements ImagePositionLocator {
 
         FPoint2D result = new FPoint2D();
         double sum = 0;
-        double distances[] = new double[projs.size()];
+        double[] distances = new double[projs.size()];
         double distToClosestPivot = Double.MAX_VALUE;
 
         //Get closest pivot

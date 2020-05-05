@@ -26,7 +26,7 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
     public LeastSquaresImagePositionLocator() {
     }
 
-    private class PairResult {
+    private static class PairResult {
         PairResult(double x, double y) {
             this.x = x;
             this.y = y;
@@ -49,7 +49,7 @@ public class LeastSquaresImagePositionLocator implements ImagePositionLocator {
             mindist = Math.min(mindist, lon * lon + lat * lat);
             if (mindist == 0) {
                 return g2p ? new PairResult(m.imgpoint.x, m.imgpoint.y) :
-                             new PairResult(m.realpoint.longitude, m.realpoint.latitude);
+                        new PairResult(m.realpoint.longitude, m.realpoint.latitude);
             }
         }
         // Multiple A and b by transpose(A)*weights

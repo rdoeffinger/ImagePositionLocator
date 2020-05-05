@@ -85,7 +85,7 @@ public class TrackDB {
         int thisVersion = ois.readInt();
         switch (thisVersion) {
         case 1:
-            maps = new HashMap<Long, TrackDBEntry>();
+            maps = new HashMap<>();
             long count = ois.readLong();
             for (long i = 0; i < count; i++) {
                 TrackDBEntry tmp = new TrackDBEntry(ois);

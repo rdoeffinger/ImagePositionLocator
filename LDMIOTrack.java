@@ -20,7 +20,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -113,8 +112,8 @@ public class LDMIOTrack implements ILDMIOHandler {
             if (first_byte < '0' || first_byte > '9') {
                 isFileValid = readBinary(pathToFile);
             } else {
-                gpspath = new ArrayList<GpsPoint>();
-                markers = new ArrayList<Marker>();
+                gpspath = new ArrayList<>();
+                markers = new ArrayList<>();
                 int version = Integer.valueOf(br.readLine());
                 int gpspath_size = Integer.valueOf(br.readLine());
                 for (int i = 0; i < gpspath_size; i++) {
