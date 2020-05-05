@@ -16,9 +16,9 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Holds metadata for a track file
@@ -40,7 +40,7 @@ public class TrackDBEntry {
         maxlon = -1000;
     }
 
-    TrackDBEntry(ObjectInputStream ois) throws IOException {
+    TrackDBEntry(DataInput ois) throws IOException {
         identifier = ois.readLong();
         mapname = ois.readUTF();
         rotation = ois.readInt();
@@ -50,7 +50,7 @@ public class TrackDBEntry {
         maxlon = ois.readDouble();
     }
 
-    public void save(ObjectOutputStream oos) throws IOException {
+    public void save(DataOutput oos) throws IOException {
         oos.writeLong(identifier);
         oos.writeUTF(mapname);
         oos.writeInt(rotation);

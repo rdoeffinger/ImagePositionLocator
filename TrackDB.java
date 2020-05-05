@@ -16,13 +16,14 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -80,13 +81,12 @@ public class TrackDB {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private boolean versionDependendLoad(ObjectInputStream ois) throws IOException {
+    private boolean versionDependendLoad(DataInput ois) throws IOException {
         int thisVersion = ois.readInt();
         switch (thisVersion) {
         case 1:
             maps = new HashMap<>();
-            long count = ois.readLong();
+            long count = ois.readInt();
             for (long i = 0; i < count; i++) {
                 TrackDBEntry tmp = new TrackDBEntry(ois);
                 maps.put(tmp.getIdentifier(), tmp);
@@ -113,11 +113,11 @@ public class TrackDB {
         if (isFileValid) {
             System.err.println("All OK.");
             FileInputStream fis = new FileInputStream(dbFile);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            isFileValid = versionDependendLoad(ois);
+            DataInputStream dis = new DataInputStream(fis);
+            isFileValid = versionDependendLoad(dis);
             if (!isFileValid && !backup.exists())
                 FileUtils.copyFileToFile(dbFile, backup);
-            ois.close();
+            dis.close();
             fis.close();
         }
 
@@ -203,17 +203,17 @@ public class TrackDB {
     public void save() {
         try {
             FileOutputStream fis = new FileOutputStream(dbFile);
-            ObjectOutputStream oos = new ObjectOutputStream(fis);
+            DataOutputStream dos = new DataOutputStream(fis);
 
-            oos.writeInt(versionNumber);
-            oos.writeLong(maps.size());
+            dos.writeInt(versionNumber);
+            dos.writeInt(maps.size());
             for (TrackDBEntry e : maps.values())
             {
-                e.save(oos);
+                e.save(dos);
             }
-            oos.writeLong(lastIdentifier);
+            dos.writeLong(lastIdentifier);
 
-            oos.close();
+            dos.close();
             fis.close();
         } catch (IOException e) {
             e.printStackTrace();
