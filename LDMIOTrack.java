@@ -114,20 +114,20 @@ public class LDMIOTrack implements ILDMIOHandler {
             } else {
                 gpspath = new ArrayList<>();
                 markers = new ArrayList<>();
-                int version = Integer.valueOf(br.readLine());
-                int gpspath_size = Integer.valueOf(br.readLine());
+                int version = Integer.parseInt(br.readLine());
+                int gpspath_size = Integer.parseInt(br.readLine());
                 for (int i = 0; i < gpspath_size; i++) {
                     String line = br.readLine();
                     String[] values = line.split(" ");
-                    gpspath.add(new GpsPoint(Double.valueOf(values[1]), Double.valueOf(values[0]), Long.valueOf(values[2])));
+                    gpspath.add(new GpsPoint(Double.parseDouble(values[1]), Double.parseDouble(values[0]), Long.parseLong(values[2])));
                 }
-                int markers_size = Integer.valueOf(br.readLine());
+                int markers_size = Integer.parseInt(br.readLine());
                 for (int i = 0; i < markers_size; i++) {
                     String line = br.readLine();
                     String[] values = line.split(" ");
-                    Point2D p = new Point2D(Double.valueOf(values[0]), Double.valueOf(values[1]));
-                    GpsPoint g = new GpsPoint(Double.valueOf(values[3]), Double.valueOf(values[2]), Long.valueOf(values[4]));
-                    markers.add(new Marker(p, Long.valueOf(values[5]), g));
+                    Point2D p = new Point2D(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
+                    GpsPoint g = new GpsPoint(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Long.parseLong(values[4]));
+                    markers.add(new Marker(p, Long.parseLong(values[5]), g));
                 }
                 br.close();
             }
