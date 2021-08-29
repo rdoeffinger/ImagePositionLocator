@@ -30,6 +30,11 @@ public class TrackDBEntry {
     int rotation;
     double minlat, minlon, maxlat, maxlon;
 
+    public static TrackDBEntry testMapEntry(Long id)
+    {
+        return new TrackDBEntry(id);
+    }
+
     TrackDBEntry(Long identifier) {
         this.identifier = identifier;
         mapname = "";
