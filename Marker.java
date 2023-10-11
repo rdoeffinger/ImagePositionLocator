@@ -16,6 +16,8 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
+import androidx.annotation.NonNull;
+
 /**
  * A tuple of GpsPoint and Point2D.
  */
@@ -48,6 +50,7 @@ public class Marker {
         return new Marker(imgpoint.getOrthogonal(a.imgpoint), time, realpoint.getOrthogonal(a.realpoint));
     }
 
+    @NonNull
     public String toString() {
         return Integer.toHexString(this.hashCode()) + " Imagep: " + imgpoint.toString() + " Realp: " + realpoint.toString();
     }

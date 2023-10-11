@@ -97,7 +97,7 @@ public class LocationDataManager {
 
             reportNewImagePoint(imagePositionAlg.getPointPosition(input));
         } else {
-            System.err.println("Point: " + input.toString() + " exceeds MAX_MOVEMENT_SPEED by " + movementSpeed);
+            System.err.println("Point: " + input + " exceeds MAX_MOVEMENT_SPEED by " + movementSpeed);
         }
     }
 

@@ -16,12 +16,14 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
+import androidx.annotation.NonNull;
+
 /**
  * Represents a point defined by latitude
  * and longitude.
  */
 public class GpsPoint {
-    static private final transient double  RADIUS = 6371;  // earth's mean radius in km
+    static private final double  RADIUS = 6371;  // earth's mean radius in km
 
     public double longitude;
     public double latitude;
@@ -117,6 +119,7 @@ public class GpsPoint {
         return d;
     }
 
+    @NonNull
     public String toString() {
         return "GPS<" + latitude + "," + longitude + ">";
     }

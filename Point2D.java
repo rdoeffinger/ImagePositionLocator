@@ -16,6 +16,8 @@
 
 package de.hu_berlin.informatik.spws2014.ImagePositionLocator;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -54,6 +56,7 @@ public class Point2D implements Serializable {
         return (inp.x > this.x) || (inp.y > this.y);
     }
 
+    @NonNull
     public String toString() {
         return "P2D<" + x + "," + y + ">";
     }
