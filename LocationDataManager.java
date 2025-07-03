@@ -155,7 +155,7 @@ public class LocationDataManager {
         // Send new estimated user position
         if (lastGpsPoint != null) {
             ArrayList<Marker> markers = iohandler.getAllMarkers();
-            if (markers.size() != 0) {
+            if (!markers.isEmpty()) {
                 Point2D tmp;
                 if (markers.size() == 1) {
                     tmp = markers.get(0).imgpoint;
@@ -178,7 +178,7 @@ public class LocationDataManager {
      * @param p New image position
      */
     private void reportNewImagePoint(Point2D p) {
-        if (p != null || p != lastImagePoint) {
+        if (p != null && p != lastImagePoint) {
             lastImagePoint = p;
             if (hostAppCallback != null) {
                 try {

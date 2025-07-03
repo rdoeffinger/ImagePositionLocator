@@ -164,7 +164,7 @@ public class LDMIOTrack implements ILDMIOHandler {
 
     @Override
     public Marker getLastMarker() {
-        if (markers.size() == 0)
+        if (markers.isEmpty())
             return null;
         else
             return markers.get(markers.size()-1);
@@ -195,7 +195,7 @@ public class LDMIOTrack implements ILDMIOHandler {
 
     @Override
     public GpsPoint getLastGpsPoint() {
-        if (gpspath.size() == 0)
+        if (gpspath.isEmpty())
             return null;
         else
             return gpspath.get(gpspath.size()-1);
